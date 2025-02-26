@@ -4,7 +4,7 @@
       <el-header>Header</el-header>
       <el-container>
         <el-aside width="auto">
-          <el-menu default-active="1-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
+          <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
             background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" :router="true">
             <el-submenu index="1">
               <template slot="title">

@@ -10,7 +10,12 @@ const routes = [
     component: Cylayout,
     children: [
       {
-        path: "1-1",
+        path: "/",
+        name: "Cyhome",
+        component: () => import("../Cypage/Cyhome.vue"),
+      },
+      {
+        path: "/1-1",
         name: "Cyhome",
         component: () => import("../Cypage/Cyhome.vue"),
       },
