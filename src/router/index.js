@@ -15,9 +15,24 @@ const routes = [
         component: () => import("../Cypage/Cyhome.vue"),
       },
       {
-        path: "/1-1",
-        name: "Cyhome",
-        component: () => import("../Cypage/Cyhome.vue"),
+        path: "/product",
+        name: "product",
+        component: () => import("../Cypage/Cyproduct.vue"),
+      },
+      {
+        path: "/advertisement",
+        name: "advertisement",
+        component: () => import("../Cypage/Cyad.vue"),
+      },
+      {
+        path: "/assets",
+        name: "assets",
+        component: () => import("../Cypage/Cyassets.vue"),
+      },
+      {
+        path: "/consult",
+        name: "consult",
+        component: () => import("../Cypage/Cyconsult.vue"),
       },
     ],
   },

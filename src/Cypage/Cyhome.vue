@@ -1,15 +1,39 @@
 <template>
-  <div>
+  <div class="Cyhome">
+    <el-row :gutter="15">
+      <el-col :span="6">
+        <Weight>
+          <div class="download">
+            <p>登录用户</p>
+            <p>{{ item }}</p>
+          </div>
+        </Weight>
+      </el-col>
+      <el-col :span="6">
+        <Weight>
+          <div class="download">
+            <p>下载</p>
+          </div>
+        </Weight>
+      </el-col>
+      <el-col :span="6">
+        <Weight>
+          <div class="download">
+            <p>活跃用户</p>
+          </div>
+        </Weight>
+      </el-col>
+      <el-col :span="6">
+        <Weight>
+          <div class="download">
+            <p>系统信息</p>
+          </div>
+        </Weight>
+      </el-col>
+    </el-row>
     <Weight>
-      <el-table :data="tableData" style="width: 100%">
-        <el-table-column prop="date" label="日期" width="180">
-        </el-table-column>
-        <el-table-column prop="name" label="姓名" width="180">
-        </el-table-column>
-        <el-table-column prop="address" label="地址"> </el-table-column>
-      </el-table>
+      <Cyecharts :options="chartOptions" />
     </Weight>
-    <Weight><Cyecharts :options="chartOptions" /></Weight>
   </div>
 </template>
 <script>
@@ -17,28 +41,9 @@ export default {
   components: {},
   data() {
     return {
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄",
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-      ],
+      socket: null,
+      message: '',
+      messages: [],
       chartOptions: {
         title: {
           text: "柱状图示例",
@@ -66,5 +71,39 @@ export default {
       },
     };
   },
+  mounted() { //dom渲染结束后调用
+    this.initWebsocket();
+  },
+  beforeDestroy() { //销毁连接，防止内存溢出
+    this.socket.close();
+  },
+  methods: {
+    initWebsocket() {
+      this.socket = new WebSocket('ws://');
+      this.socket.onopen = () => {
+        console.log('WebSocket connected');
+      };
+
+      this.socket.onmessage = (event) => {
+        this.messages.push(event.data);
+      };
+
+      this.socket.onerror = (error) => {
+        console.error('WebSocket error:', error);
+      };
+
+      this.socket.onclose = () => {
+        console.log('WebSocket closed');
+      };
+    },
+    sendMessage() {
+      if (this.socket && this.socket.readyState === WebSocket.OPEN) {
+        this.socket.send(this.message);
+        this.message = '';
+      } else {
+        console.error('WebSocket is not open');
+      }
+    }
+  }
 };
 </script>
