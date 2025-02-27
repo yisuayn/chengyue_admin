@@ -6,6 +6,10 @@
 <script>
 export default{
     name:"Weight",
+    data(){
+        return{
+        }
+    }
 }
 </script>
 <style lang="scss">

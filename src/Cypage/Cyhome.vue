@@ -1,36 +1,35 @@
 <template>
   <div class="Cyhome">
-    <el-row :gutter="15">
-      <el-col :span="6">
-        <Weight>
-          <div class="download">
-            <p>登录用户</p>
-            <p>{{ item }}</p>
+    <Weight>
+      <el-row>
+        <el-col>
+          <el-breadcrumb separator="/">
+            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item><a href="/">活动管理</a></el-breadcrumb-item>
+            <el-breadcrumb-item>活动列表</el-breadcrumb-item>
+            <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+          </el-breadcrumb>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="16">
+          <p>工作台</p>
+          <div class="platform">
+            <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+              :size="150"></el-avatar>
+            <div>
+              <p>上午好，田野院子，休息一会儿吧</p>
+              <p>前端工程师|某某公司-某某部门-vue平台</p>
+            </div>
           </div>
-        </Weight>
-      </el-col>
-      <el-col :span="6">
-        <Weight>
-          <div class="download">
-            <p>下载</p>
-          </div>
-        </Weight>
-      </el-col>
-      <el-col :span="6">
-        <Weight>
-          <div class="download">
-            <p>活跃用户</p>
-          </div>
-        </Weight>
-      </el-col>
-      <el-col :span="6">
-        <Weight>
-          <div class="download">
-            <p>系统信息</p>
-          </div>
-        </Weight>
-      </el-col>
-    </el-row>
+        </el-col>
+        <el-col :span="8">
+         <p>更新时间</p>
+         <p>更新次数</p>
+         <p>更新内容</p>
+        </el-col>
+      </el-row>
+    </Weight>
     <Weight>
       <Cyecharts :options="chartOptions" />
     </Weight>
@@ -41,9 +40,6 @@ export default {
   components: {},
   data() {
     return {
-      socket: null,
-      message: '',
-      messages: [],
       chartOptions: {
         title: {
           text: "柱状图示例",
@@ -71,39 +67,10 @@ export default {
       },
     };
   },
-  mounted() { //dom渲染结束后调用
-    this.initWebsocket();
-  },
-  beforeDestroy() { //销毁连接，防止内存溢出
-    this.socket.close();
-  },
-  methods: {
-    initWebsocket() {
-      this.socket = new WebSocket('ws://');
-      this.socket.onopen = () => {
-        console.log('WebSocket connected');
-      };
-
-      this.socket.onmessage = (event) => {
-        this.messages.push(event.data);
-      };
-
-      this.socket.onerror = (error) => {
-        console.error('WebSocket error:', error);
-      };
-
-      this.socket.onclose = () => {
-        console.log('WebSocket closed');
-      };
-    },
-    sendMessage() {
-      if (this.socket && this.socket.readyState === WebSocket.OPEN) {
-        this.socket.send(this.message);
-        this.message = '';
-      } else {
-        console.error('WebSocket is not open');
-      }
-    }
-  }
 };
 </script>
+<style lang="scss">
+.platform {
+  display: flex;
+}
+</style>
