@@ -2,11 +2,13 @@
     <div class="Cyproduct">
         <Weight>
             <el-table :data="tableData" style="width: 100%">
-                <el-table-column prop="date" label="日期" width="180">
+                <el-table-column prop="date" label="产品图" width="180">
                 </el-table-column>
-                <el-table-column prop="name" label="姓名" width="180">
+                <el-table-column prop="name" label="产品名称" width="180">
                 </el-table-column>
-                <el-table-column prop="address" label="地址">
+                <el-table-column prop="address" label="产品分类">
+                </el-table-column>
+                <el-table-column prop="address" label="发布">
                 </el-table-column>
             </el-table>
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
