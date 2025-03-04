@@ -4,8 +4,16 @@
       <el-header>Header</el-header>
       <el-container>
         <el-aside width="auto">
-          <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
-            background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" :router="true">
+          <el-menu
+            :default-active="activeIndex"
+            class="el-menu-vertical-demo"
+            @open="handleOpen"
+            @close="handleClose"
+            background-color="#545c64"
+            text-color="#fff"
+            active-text-color="#ffd04b"
+            :router="true"
+          >
             <el-menu-item index="/">
               <i class="el-icon-menu"></i>
               <span slot="title">首页</span>
@@ -29,7 +37,9 @@
           </el-menu>
         </el-aside>
         <el-container>
-          <el-main><router-view /></el-main>
+          <el-main>
+            <router-view />
+          </el-main>
           <el-footer>Footer</el-footer>
         </el-container>
       </el-container>
@@ -38,20 +48,30 @@
 </template>
 
 <script>
-
-
 export default {
-  name: "cylayout",
-  components: {
+  name: 'cylayout',
+  data() {
+    return {
+      activeIndex: '', //默认菜单
+    };
   },
+  watch: {},
+  components: {},
   methods: {
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
     },
     handleClose(key, keyPath) {
       console.log(key, keyPath);
+    },
+  },
+  mounted() {
+    if (this.$route.path === '/') {
+      this.activeIndex = '/';
+    } else {
+      this.activeIndex = this.$route.path.split('/')[1];
     }
-  }
+  },
 };
 </script>
 
@@ -65,10 +85,10 @@ export default {
 }
 
 .el-aside {
-  background-color: #D3DCE6;
+  background-color: #d3dce6;
   color: #333;
   line-height: 200px;
-  .el-menu{
+  .el-menu {
     height: 100%;
     width: 260px;
   }
@@ -82,7 +102,7 @@ export default {
   padding: 10px !important;
 }
 
-body>.el-container {
+body > .el-container {
   margin-bottom: 40px;
 }
 
