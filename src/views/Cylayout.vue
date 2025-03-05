@@ -1,7 +1,7 @@
 <template>
   <div class="cylayout">
     <el-container>
-      <el-header>Header</el-header>
+      <el-header><Cyheader /></el-header>
       <el-container>
         <el-aside width="auto">
           <el-menu
@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import Cyheader from '../components/Cyheader.vue';
 export default {
   name: 'cylayout',
   data() {
@@ -56,7 +57,7 @@ export default {
     };
   },
   watch: {},
-  components: {},
+  components: {Cyheader},
   methods: {
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
