@@ -1,6 +1,6 @@
 <template>
   <div class="Cyproduct">
-    <Weight>
+    <Weight class="product_content">
       <div class="product_container">
         <el-form ref="form"  class="product_from">
           <el-select v-model="Selectwords" filterable placeholder="请选择">
@@ -171,6 +171,7 @@ export default {
 };
 </script>
 <style lang="scss">
+.product_content{padding: 20px;}
 .product_container {
   display: flex;
   justify-content: space-between;

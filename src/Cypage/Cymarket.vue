@@ -1,38 +1,52 @@
 <template>
-     <Weight>
-      <Cyecharts :options="chartOptions" />
-    </Weight>
+  <Weight>
+    <Cyecharts :initialData="chartData" :intervalTime="2000" />
+  </Weight>
 </template>
 <script>
-export default{
-    data(){
-        return{
-            chartOptions: {
-        title: {
-          text: '柱状图示例',
-        },
-        tooltip: {
-          trigger: 'axis',
-        },
-        legend: {
-          data: ['销量'],
-        },
-        xAxis: {
-          type: 'category',
-          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
-        },
-        yAxis: {
-          type: 'value',
-        },
-        series: [
-          {
-            name: '销量',
-            type: 'bar', // 使用柱状图
-            data: [120, 200, 150, 80, 70, 110, 130],
-          },
-        ],
+export default {
+  name: "",
+  components: {},
+  data() {
+    return {
+      chartData: {
+        categories: (function () {
+          let now = new Date();
+          let res = [];
+          let len = 10;
+          while (len--) {
+            res.unshift(now.toLocaleTimeString().replace(/^\D*/, ""));
+            now = new Date(+now - 2000);
+          }
+          return res;
+        })(),
+        categories2: (function () {
+          let res = [];
+          let len = 10;
+          while (len--) {
+            res.push(10 - len - 1);
+          }
+          return res;
+        })(),
+        data: (function () {
+          let res = [];
+          let len = 10;
+          while (len--) {
+            res.push(Math.round(Math.random() * 1000));
+          }
+          return res;
+        })(),
+        data2: (function () {
+          let res = [];
+          let len = 0;
+          while (len < 10) {
+            res.push(+(Math.random() * 10 + 5).toFixed(1));
+            len++;
+          }
+          return res;
+        })(),
       },
-        }
-    }
-}
+    };
+  },
+};
 </script>

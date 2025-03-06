@@ -1,7 +1,7 @@
 <template>
   <div class="Cyhome">
     <Weight>
-      <el-row>
+      <el-row class="userinfo">
         <el-col :span="16">
           <p>工作台</p>
           <div class="platform">
@@ -178,14 +178,14 @@ export default {
           customer: '广州梦之家',
           amount: '¥6,300',
           status: '待付款',
-          statusType: 'warning',
+          statusType: 'danger',
         },
         {
           id: 'ORD-2023004',
           customer: '深圳优家纺织',
           amount: '¥15,200',
           status: '已发货',
-          statusType: 'info',
+          statusType: 'warning',
         },
         {
           id: 'ORD-2023005',
@@ -207,6 +207,7 @@ export default {
 };
 </script>
 <style lang="scss">
+.userinfo{padding: 40px;}
 .el-card {
   border: 0;
 }
