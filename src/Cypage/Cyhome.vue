@@ -150,9 +150,6 @@
         </Weight>
       </el-col>
     </el-row>
-    <Weight>
-      <Cyecharts :options="chartOptions" />
-    </Weight>
   </div>
 </template>
 <script>
@@ -205,31 +202,6 @@ export default {
         { id: 'P-10056', name: '羽绒被', stock: 5, threshold: 10 },
         { id: 'P-10078', name: '毛巾套装', stock: 18, threshold: 30 },
       ],
-      chartOptions: {
-        title: {
-          text: '柱状图示例',
-        },
-        tooltip: {
-          trigger: 'axis',
-        },
-        legend: {
-          data: ['销量'],
-        },
-        xAxis: {
-          type: 'category',
-          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
-        },
-        yAxis: {
-          type: 'value',
-        },
-        series: [
-          {
-            name: '销量',
-            type: 'bar', // 使用柱状图
-            data: [120, 200, 150, 80, 70, 110, 130],
-          },
-        ],
-      },
     };
   },
 };

@@ -13,6 +13,11 @@ const routes = [
         path: "/",
         name: "Cyhome",
         component: () => import("../Cypage/Cyhome.vue"),
+        meta:{
+          breadcrumb:[
+            {name:'仪表盘',path:""}
+          ]
+        }
       },
       {
         path: "/product",
