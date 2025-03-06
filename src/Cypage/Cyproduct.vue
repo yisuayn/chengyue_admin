@@ -2,7 +2,7 @@
   <div class="Cyproduct">
     <Weight>
       <div class="product_container">
-        <from ref="form" :model="formdata" class="product_from">
+        <el-form ref="form"  class="product_from">
           <el-select v-model="Selectwords" filterable placeholder="请选择">
             <el-option
               v-for="item in wordsteam"
@@ -29,7 +29,7 @@
             ></el-option>
           </el-select>
           <el-button>搜索</el-button>
-        </from>
+        </el-form>
         <el-button type="primary" @click="dialog = true">添加</el-button>
       </div>
       <el-table :data="tableData" style="width: 100%">
@@ -177,7 +177,7 @@ export default {
 }
 .product_from {
   display: flex;
-  gap: 3rem;
+  gap: 1rem;
   width: 80%;
 }
 .el-pagination{

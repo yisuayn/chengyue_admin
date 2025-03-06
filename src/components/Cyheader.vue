@@ -1,28 +1,109 @@
 <template>
-    <header class="bg-white shadow">
-      <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-        <div class="flex items-center">
-          <img src="/placeholder.svg?height=40&width=40" alt="Logo" class="h-10 w-10 mr-3">
-          <h1 class="text-xl font-bold text-gray-800">家纺管理系统</h1>
-        </div>
-        <div class="flex items-center">
-          <div class="relative mr-4">
-            <input 
-              type="text" 
-              placeholder="搜索..." 
-              class="px-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gray-200"
-            >
-            <button class="absolute right-3 top-2.5">
-              <search-icon class="h-4 w-4 text-gray-500" />
-            </button>
-          </div>
-          <div class="flex items-center">
-            <bell-icon class="h-5 w-5 text-gray-600 mr-4" />
-            <div class="h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center">
-              <user-icon class="h-4 w-4 text-gray-600" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
+  <header class="shadow">
+    <div class="logo-container">
+      <img src alt="Logo" class="logo-img" />
+      <span class="logo-text">管理系统</span>
+    </div>
+    <div class="header-right">
+      <el-dropdown trigger="click">
+        <span class="el-dropdown-link">
+          <el-avatar
+            :size="50"
+            src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+          ></el-avatar>
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item @click.native="inforVisible = true">
+            个人信息
+          </el-dropdown-item>
+          <el-dropdown-item @click.native="passwordVisible = true">修改密码</el-dropdown-item>
+          <el-dropdown-item divided>退出登录</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </div>
+    <!-- 个人信息修改 -->
+    <el-dialog title="提示" :visible.sync="inforVisible" width="30%" :before-close="handleClose">
+      <span>这是一段信息</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="inforVisible = false">取 消</el-button>
+        <el-button type="primary" @click="inforVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 修改密码对话框 -->
+    <el-dialog title="修改密码" :visible.sync="passwordVisible" width="30%">
+      <el-form :model="passwordForm" label-width="100px">
+        <el-form-item label="旧密码">
+          <el-input type="password" v-model="passwordForm.oldPassword"></el-input>
+        </el-form-item>
+        <el-form-item label="新密码">
+          <el-input type="password" v-model="passwordForm.newPassword"></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码">
+          <el-input type="password" v-model="passwordForm.confirmPassword"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="passwordVisible = false">取消</el-button>
+        <el-button type="primary" @click="onSubmit">确定</el-button>
+      </span>
+    </el-dialog>
+  </header>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      inforVisible: false,
+      passwordVisible: false,
+      passwordForm: {
+        oldPassword: '',
+        newPassword: '',
+        confirmPassword: '',
+      },
+      circleUrl:
+        'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
+    };
+  },
+  methods: {
+    handleClose(done) {
+      this.$confirm('确认关闭？')
+        .then(() => {
+          done();
+        })
+        .catch(() => {});
+    },
+    onSubmit() {
+      // 表单验证
+      if (this.passwordForm.newPassword !== this.passwordForm.confirmPassword) {
+        this.$message.error('两次输入的密码不一致');
+        return;
+      }
+
+      // 提交逻辑
+      console.log('修改密码表单数据:', this.passwordForm);
+      this.$message.success('密码修改成功');
+      this.dialogVisible = false; // 关闭对话框
+    },
+  },
+};
+</script>
+<style lang="scss">
+.shadow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding-right: 40px;
+    .el-dropdown {
+      height: 50px;
+    }
+  }
+}
+.el-button--text {
+  color: #606266;
+}
+</style>
