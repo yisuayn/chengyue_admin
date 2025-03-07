@@ -1,6 +1,6 @@
 <template>
   <Weight>
-    <Cyecharts :initialData="chartData" :intervalTime="2000" />
+    <Cyecharts :initialData="chartData" :intervalTime="5000" />
   </Weight>
 </template>
 <script>

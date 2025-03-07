@@ -2,23 +2,32 @@
   <div class="Cyhome">
     <Weight>
       <el-row class="userinfo">
-        <el-col :span="16">
-          <p>工作台</p>
+        <el-col :span="13">
+          <p class="workbench">工作台</p>
           <div class="platform">
             <el-avatar
               src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
               :size="150"
             ></el-avatar>
-            <div>
+            <div class="descrition">
               <p>上午好，田野院子，休息一会儿吧</p>
               <p>前端工程师|某某公司-某某部门-vue平台</p>
             </div>
           </div>
         </el-col>
-        <el-col :span="8">
-          <p>更新时间</p>
-          <p>更新次数</p>
-          <p>更新内容</p>
+        <el-col :span="6">
+          <div class="updata">
+            <p>当前时间:&nbsp;&nbsp;&nbsp;{{ newtime }}</p>
+            <p>操作次数:&nbsp;&nbsp;&nbsp;{{ optionsnum }}</p>
+            <p>同比订单:&nbsp;&nbsp;&nbsp;{{ orderinfo }} / 999+</p>
+          </div>
+        </el-col>
+        <el-col :span="5">
+          <div class="updata">
+            <p>当前时间:&nbsp;&nbsp;&nbsp;{{ newtime }}</p>
+            <p>操作次数:&nbsp;&nbsp;&nbsp;{{ optionsnum }}</p>
+            <p>同比订单:&nbsp;&nbsp;&nbsp;{{ orderinfo }} / 999+</p>
+          </div>
         </el-col>
       </el-row>
     </Weight>
@@ -157,68 +166,126 @@ export default {
   components: {},
   data() {
     return {
-      chartTimeRange: 'month',
+      newtime: "",
+      optionsnum: "0",
+      orderinfo: "0",
+      chartTimeRange: "month",
       recentOrders: [
         {
-          id: 'ORD-2023001',
-          customer: '上海家居有限公司',
-          amount: '¥12,500',
-          status: '已完成',
-          statusType: 'success',
+          id: "ORD-2023001",
+          customer: "上海家居有限公司",
+          amount: "¥12,500",
+          status: "已完成",
+          statusType: "success",
         },
         {
-          id: 'ORD-2023002',
-          customer: '北京舒适家纺',
-          amount: '¥8,760',
-          status: '处理中',
-          statusType: 'primary',
+          id: "ORD-2023002",
+          customer: "北京舒适家纺",
+          amount: "¥8,760",
+          status: "处理中",
+          statusType: "primary",
         },
         {
-          id: 'ORD-2023003',
-          customer: '广州梦之家',
-          amount: '¥6,300',
-          status: '待付款',
-          statusType: 'danger',
+          id: "ORD-2023003",
+          customer: "广州梦之家",
+          amount: "¥6,300",
+          status: "待付款",
+          statusType: "danger",
         },
         {
-          id: 'ORD-2023004',
-          customer: '深圳优家纺织',
-          amount: '¥15,200',
-          status: '已发货',
-          statusType: 'warning',
+          id: "ORD-2023004",
+          customer: "深圳优家纺织",
+          amount: "¥15,200",
+          status: "已发货",
+          statusType: "warning",
         },
         {
-          id: 'ORD-2023005',
-          customer: '杭州家纺世家',
-          amount: '¥9,800',
-          status: '已完成',
-          statusType: 'success',
+          id: "ORD-2023005",
+          customer: "杭州家纺世家",
+          amount: "¥9,800",
+          status: "已完成",
+          statusType: "success",
         },
       ],
       stockWarnings: [
-        { id: 'P-10025', name: '高档棉被套', stock: 15, threshold: 20 },
-        { id: 'P-10032', name: '丝绒枕套', stock: 8, threshold: 15 },
-        { id: 'P-10045', name: '亚麻床单', stock: 12, threshold: 25 },
-        { id: 'P-10056', name: '羽绒被', stock: 5, threshold: 10 },
-        { id: 'P-10078', name: '毛巾套装', stock: 18, threshold: 30 },
+        { id: "P-10025", name: "高档棉被套", stock: 15, threshold: 20 },
+        { id: "P-10032", name: "丝绒枕套", stock: 8, threshold: 15 },
+        { id: "P-10045", name: "亚麻床单", stock: 12, threshold: 25 },
+        { id: "P-10056", name: "羽绒被", stock: 5, threshold: 10 },
+        { id: "P-10078", name: "毛巾套装", stock: 18, threshold: 30 },
       ],
     };
+  },
+  mounted() {
+    this.updateTime();
+    this.updateOrderCount();
+    this.updataorder();
+    // 定时更新数据
+    setInterval(() => {
+      this.updateTime();
+    }, 1000); // 每 1秒更新一次
+    setInterval(() => {
+      this.updateOrderCount();
+      this.updataorder();
+    }, 5000);
+  },
+  methods: {
+    // 更新当前时间
+    updateTime() {
+      this.newtime = new Date().toLocaleTimeString();
+    },
+    // 更新订单数
+    updateOrderCount() {
+      this.optionsnum = Math.floor(Math.random() * 100); // 模拟订单数
+    },
+    updataorder() {
+      this.orderinfo = Math.floor(Math.random() * 999);
+    },
+
+    beforeDestroy() {
+      // 清除定时器
+      if (this.interval) {
+        clearInterval(this.interval);
+      }
+    },
   },
 };
 </script>
 <style lang="scss">
-.userinfo{padding: 40px;}
+.userinfo {
+  padding: 40px;
+  .workbench {
+    font-size: 30px;
+    font-weight: 600;
+    padding: 0px 0 30px 20px;
+  }
+  .platform {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    .descrition {
+      p:nth-child(1) {
+        padding-top: 30px;
+        padding-bottom: 10px;
+      }
+      p:nth-child(2) {
+      }
+    }
+  }
+  .updata {
+    display: grid;
+    gap: 1rem;
+    padding-top: 67px;
+  }
+}
 .el-card {
   border: 0;
 }
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
-    'Microsoft YaHei', Arial, sans-serif;
-}
-.platform {
-  display: flex;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", Arial, sans-serif;
 }
 /* 数据卡片样式 */
 .data-card {
@@ -311,7 +378,7 @@ body {
 }
 
 .mock-chart:after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 0;

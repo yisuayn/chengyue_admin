@@ -1,7 +1,7 @@
 <template>
   <header class="shadow">
     <div class="logo-container">
-      <img src alt="Logo" class="logo-img" />
+      <img src="../assets/logo.png" alt="Logo" class="logo-img" />
       <span class="logo-text">管理系统</span>
     </div>
     <div class="header-right">
@@ -89,6 +89,8 @@ export default {
 };
 </script>
 <style lang="scss">
+.el-breadcrumb__inner{font-size: 20px;}
+.logo-container{display: flex;gap: 1rem;align-items: center;}
 .shadow {
   display: flex;
   justify-content: space-between;
@@ -105,5 +107,9 @@ export default {
 }
 .el-button--text {
   color: #606266;
+}
+.logo-img{
+  height: 50px;
+  padding-left: 20px;
 }
 </style>

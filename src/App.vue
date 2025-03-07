@@ -31,4 +31,9 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #555; /* 滑块悬停背景色 */
 }
+#app{
+  font-family: 'Pacifico', cursive;
+  font-size: 25px;
+  font-weight: 600 !important;
+}
 </style>

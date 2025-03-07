@@ -33,7 +33,7 @@ export default {
       data: [],
       data2: [],
       app: {
-        count: 11,
+        count: 12,
       },
     };
   },
@@ -52,7 +52,7 @@ export default {
     },
   },
   mounted() {
-    this.myChart = echarts.init(this.$refs.chart); // 初始化图表 
+    this.myChart = echarts.init(this.$refs.chart); // 初始化图表
     this.initChart();
     this.startInterval();
   },
@@ -64,7 +64,7 @@ export default {
       // 配置项
       const option = {
         title: {
-          text: "Dynamic Data",
+          text: "销售数据",
         },
         tooltip: {
           trigger: "axis",
@@ -121,14 +121,14 @@ export default {
         ],
         series: [
           {
-            name: "Dynamic Bar",
+            name: "销售柱状图",
             type: "bar",
             xAxisIndex: 1,
             yAxisIndex: 1,
             data: this.data,
           },
           {
-            name: "Dynamic Line",
+            name: "销售折线图",
             type: "line",
             data: this.data2,
           },
@@ -155,24 +155,26 @@ export default {
       }, this.intervalTime);
     },
     updateChart() {
-      this.myChart.setOption({
-        xAxis: [
-          {
-            data: this.categories,
-          },
-          {
-            data: this.categories2,
-          },
-        ],
-        series: [
-          {
-            data: this.data,
-          },
-          {
-            data: this.data2,
-          },
-        ],
-      });
+      if (this.myChart) {
+        this.myChart.setOption({
+          xAxis: [
+            {
+              data: this.categories,
+            },
+            {
+              data: this.categories2,
+            },
+          ],
+          series: [
+            {
+              data: this.data,
+            },
+            {
+              data: this.data2,
+            },
+          ],
+        });
+      }
     },
   },
   beforeDestroy() {

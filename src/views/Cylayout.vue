@@ -80,14 +80,14 @@
 </template>
 
 <script>
-import Cyheader from '../components/Cyheader.vue';
+import Cyheader from "../components/Cyheader.vue";
 export default {
-  name: 'cylayout',
+  name: "cylayout",
   data() {
     return {
       isCollapse: false,
       breadcrumbList: [], // 面包屑数据
-      activeIndex: '', //默认菜单
+      activeIndex: "", //默认菜单
     };
   },
   watch: {
@@ -124,10 +124,10 @@ export default {
   },
   mounted() {
     //路由监听
-    if (this.$route.path === '/') {
-      this.activeIndex = '/';
+    if (this.$route.path === "/") {
+      this.activeIndex = "/";
     } else {
-      this.activeIndex = this.$route.path.split('/')[1];
+      this.activeIndex = this.$route.path.split("/")[1];
     }
   },
 };
@@ -144,6 +144,10 @@ export default {
     padding-right: 30px;
   }
 }
+.el-header {
+  box-shadow:0 0.15rem 0.5rem 0 rgb(113, 113, 113,0.5) ;
+  z-index: 1;
+}
 .el-header,
 .el-footer {
   background-color: #fff;
@@ -153,7 +157,7 @@ export default {
 
 .el-aside {
   .el-menu-vertical-demo:not(.el-menu--collapse) {
-    width: 200px;
+    width: 240px;
   }
   background-color: #d3dce6;
   color: #333;
@@ -161,14 +165,22 @@ export default {
   .el-menu {
     height: 100%;
     .el-menu-item {
-      i{font-size: 26px;}
+      i {
+        font-size: 22px;
+      }
+      span {
+        font-size: 18px;
+      }
     }
   }
-  .el-menu-item [class^=el-icon-]{width: 26px;margin-right: 15px;}
+  .el-menu-item [class^="el-icon-"] {
+    width: 26px;
+    margin-right: 15px;
+  }
 }
 
 .el-main {
-  background-color: #faf8f8;
+  background-color: #eaedf1;
   color: #333;
   height: calc(100vh - 120px);
   overflow-y: scroll !important;
