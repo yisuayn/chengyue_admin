@@ -1,5 +1,5 @@
 <template>
-  <Weight>
+  <Weight class="market">
     <Cyecharts :initialData="chartData" :intervalTime="5000" />
   </Weight>
 </template>
@@ -50,3 +50,8 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.market{
+  padding: 20px;
+}
+</style>

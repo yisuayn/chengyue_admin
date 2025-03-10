@@ -17,16 +17,17 @@
         </el-col>
         <el-col :span="6">
           <div class="updata">
-            <p>当前时间:&nbsp;&nbsp;&nbsp;{{ newtime }}</p>
-            <p>操作次数:&nbsp;&nbsp;&nbsp;{{ optionsnum }}</p>
-            <p>同比订单:&nbsp;&nbsp;&nbsp;{{ orderinfo }} / 999+</p>
+            <p>今日订单数:&nbsp;&nbsp;&nbsp;{{ todayorder }}</p>
+            <p>本月订单数:&nbsp;&nbsp;&nbsp;{{ monthorder }}</p>
+            <p>成功订单率:&nbsp;&nbsp;&nbsp;{{ orderrate }}%</p>
+            <p>待处理订单数:&nbsp;&nbsp;&nbsp;{{ pendingorder }}%</p>
           </div>
         </el-col>
         <el-col :span="5">
           <div class="updata">
             <p>当前时间:&nbsp;&nbsp;&nbsp;{{ newtime }}</p>
             <p>操作次数:&nbsp;&nbsp;&nbsp;{{ optionsnum }}</p>
-            <p>同比订单:&nbsp;&nbsp;&nbsp;{{ orderinfo }} / 999+</p>
+            <p>订单趋势:&nbsp;&nbsp;&nbsp;{{ orderinfo }} / 999+</p>
           </div>
         </el-col>
       </el-row>
@@ -167,6 +168,10 @@ export default {
   data() {
     return {
       newtime: "",
+      monthorder:"0",
+      todayorder:"0",
+      orderrate:"0",
+      pendingorder:"0",
       optionsnum: "0",
       orderinfo: "0",
       chartTimeRange: "month",
@@ -227,6 +232,7 @@ export default {
     setInterval(() => {
       this.updateOrderCount();
       this.updataorder();
+      this.updataChance();
     }, 5000);
   },
   methods: {
@@ -241,6 +247,12 @@ export default {
     updataorder() {
       this.orderinfo = Math.floor(Math.random() * 999);
     },
+    updataChance(){
+      this.pendingorder = Math.floor(Math.random() * 10);
+      this.orderrate = Math.floor(Math.random() * 20);
+      this.monthorder = Math.floor(Math.random() * 50);
+      this.todayorder = Math.floor(Math.random() * 50);
+    },
 
     beforeDestroy() {
       // 清除定时器
@@ -254,6 +266,8 @@ export default {
 <style lang="scss">
 .userinfo {
   padding: 40px;
+  display: flex;
+  align-items: flex-end;
   .workbench {
     font-size: 30px;
     font-weight: 600;
@@ -275,7 +289,7 @@ export default {
   .updata {
     display: grid;
     gap: 1rem;
-    padding-top: 67px;
+    align-items: end;
   }
 }
 .el-card {

@@ -80,8 +80,10 @@ export default {
 
       // 提交逻辑
       console.log("修改密码表单数据:", this.passwordForm);
-      this.$message.success("密码修改成功");
-      this.dialogVisible = false; // 关闭对话框
+      this.passwordVisible = false; // 关闭对话框
+      setTimeout(() => {
+        this.$message.success("密码修改成功");
+      }, 500);
     },
   },
 };
