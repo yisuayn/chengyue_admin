@@ -2,7 +2,7 @@
   <header class="shadow">
     <div class="logo-container">
       <img src="../assets/logo.png" alt="Logo" class="logo-img" />
-      <span class="logo-text">管理系统</span>
+      <span class="logo-text">XXX管理系统</span>
     </div>
     <div class="header-right">
       <el-dropdown trigger="click">
@@ -13,16 +13,14 @@
           ></el-avatar>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item @click.native="inforVisible = true">
-            个人信息
-          </el-dropdown-item>
+          <el-dropdown-item @click.native="inforVisible = true">个人信息</el-dropdown-item>
           <el-dropdown-item @click.native="passwordVisible = true">修改密码</el-dropdown-item>
           <el-dropdown-item divided>退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
     <!-- 个人信息修改 -->
-    <el-dialog title="提示" :visible.sync="inforVisible" width="30%" :before-close="handleClose">
+    <el-dialog title="提示" :visible.sync="inforVisible" width="30%" :before-close="handleClose" append-to-body>
       <span>这是一段信息</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="inforVisible = false">取 消</el-button>
@@ -30,7 +28,7 @@
       </span>
     </el-dialog>
     <!-- 修改密码对话框 -->
-    <el-dialog title="修改密码" :visible.sync="passwordVisible" width="30%">
+    <el-dialog title="修改密码" :visible.sync="passwordVisible" append-to-body width="30%">
       <el-form :model="passwordForm" label-width="100px">
         <el-form-item label="旧密码">
           <el-input type="password" v-model="passwordForm.oldPassword"></el-input>
@@ -57,17 +55,17 @@ export default {
       inforVisible: false,
       passwordVisible: false,
       passwordForm: {
-        oldPassword: '',
-        newPassword: '',
-        confirmPassword: '',
+        oldPassword: "",
+        newPassword: "",
+        confirmPassword: "",
       },
       circleUrl:
-        'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
+        "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
     };
   },
   methods: {
     handleClose(done) {
-      this.$confirm('确认关闭？')
+      this.$confirm("确认关闭？")
         .then(() => {
           done();
         })
@@ -76,21 +74,27 @@ export default {
     onSubmit() {
       // 表单验证
       if (this.passwordForm.newPassword !== this.passwordForm.confirmPassword) {
-        this.$message.error('两次输入的密码不一致');
+        this.$message.error("两次输入的密码不一致");
         return;
       }
 
       // 提交逻辑
-      console.log('修改密码表单数据:', this.passwordForm);
-      this.$message.success('密码修改成功');
+      console.log("修改密码表单数据:", this.passwordForm);
+      this.$message.success("密码修改成功");
       this.dialogVisible = false; // 关闭对话框
     },
   },
 };
 </script>
 <style lang="scss">
-.el-breadcrumb__inner{font-size: 20px;}
-.logo-container{display: flex;gap: 1rem;align-items: center;}
+.el-breadcrumb__inner {
+  font-size: 20px;
+}
+.logo-container {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
 .shadow {
   display: flex;
   justify-content: space-between;
@@ -108,7 +112,7 @@ export default {
 .el-button--text {
   color: #606266;
 }
-.logo-img{
+.logo-img {
   height: 50px;
   padding-left: 20px;
 }
