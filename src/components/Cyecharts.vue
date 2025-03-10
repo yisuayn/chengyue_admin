@@ -1,9 +1,10 @@
 <template>
-  <div ref="chart" style="width: 100%; height: 500px"></div>
+  <div ref="chart" :style="{width: width, height: height}"></div>
 </template>
 
 <script>
 import * as echarts from "echarts";
+import { debounce } from 'lodash'; // 推荐使用lodash的防抖函数
 
 export default {
   name: "DynamicChart",
@@ -24,6 +25,19 @@ export default {
       type: Number,
       default: 2100,
     },
+    width: {
+      type: String,
+      default: '100%'
+    },
+    height: {
+      type: String,
+      default: '400px'
+    },
+    // 防抖延迟时间（毫秒）
+    debounceDelay: {
+      type: Number,
+      default: 200
+    }
   },
   data() {
     return {
@@ -52,19 +66,58 @@ export default {
     },
   },
   mounted() {
-    this.myChart = echarts.init(this.$refs.chart); // 初始化图表
     this.initChart();
     this.startInterval();
+    this.addResizeListener(); // 新增自适应监听
   },
   methods: {
+    // 新增防抖处理的自适应方法
+    handleResize: debounce(function() {
+      if (this.myChart && this.$refs.chart) {
+        try {
+          this.myChart.resize();
+        } catch (e) {
+          console.error('图表resize失败:', e);
+        }
+      }
+    }, 300),
+
+    // 新增监听器绑定方法
+    addResizeListener() {
+      // 优先使用ResizeObserver
+      if (typeof ResizeObserver === 'function') {
+        this.resizeObserver = new ResizeObserver(this.handleResize);
+        this.resizeObserver.observe(this.$refs.chart);
+      } else {
+        window.addEventListener('resize', this.handleResize);
+      }
+    },
+
+    // 新增清理监听方法
+    removeResizeListener() {
+      if (this.resizeObserver) {
+        this.resizeObserver.disconnect();
+        this.resizeObserver = null;
+      } else {
+        window.removeEventListener('resize', this.handleResize);
+      }
+    },
+
     initChart() {
+      // 增加容器可见性检查
+      if (!this.$refs.chart || this.$refs.chart.offsetParent === null) return;
+
+      // 销毁旧实例
+      if (this.myChart) {
+        this.myChart.dispose();
+      }
       // 初始化 ECharts 实例
       this.myChart = echarts.init(this.$refs.chart);
 
       // 配置项
       const option = {
         title: {
-          text: "销售数据",
+          text: "总销售数据",
         },
         tooltip: {
           trigger: "axis",
@@ -105,7 +158,7 @@ export default {
           {
             type: "value",
             scale: true,
-            name: "Price",
+            name: "价格",
             max: 30,
             min: 0,
             boundaryGap: [0.2, 0.2],
@@ -113,7 +166,7 @@ export default {
           {
             type: "value",
             scale: true,
-            name: "Order",
+            name: "订单数",
             max: 1200,
             min: 0,
             boundaryGap: [0.2, 0.2],
@@ -178,6 +231,11 @@ export default {
     },
   },
   beforeDestroy() {
+    this.removeResizeListener();
+    if (this.myChart) {
+      this.myChart.dispose();
+      this.myChart = null;
+    }
     // 清除定时器
     if (this.interval) {
       clearInterval(this.interval);
