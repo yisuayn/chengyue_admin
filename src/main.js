@@ -6,6 +6,8 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import Weight from "./components/Weight.vue";
 import Cyecharts from "./components/Cyecharts.vue";
+import Cybarchart from "./components/Cybarchart.vue";
+import Cypiechart from "./components/Cypiechart.vue";
 
 // 引入 echarts 核心模块，核心模块提供了 echarts 使用必须要的接口。
 import * as echarts from 'echarts/core';
@@ -44,6 +46,8 @@ Vue.prototype.$echarts = echarts;
 
 Vue.component('Weight',Weight);
 Vue.component('Cyecharts',Cyecharts);
+Vue.component('Cybarchart',Cybarchart);
+Vue.component('Cypiechart',Cypiechart);
 
 Vue.config.productionTip = false;
 

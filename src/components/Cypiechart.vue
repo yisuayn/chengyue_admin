@@ -1,10 +1,10 @@
 <template>
-  <div ref="chartRef" :style="{width: width, height: height}"></div>
+  <div ref="piechart" :style="{width:width,height:height}"></div>
 </template>
 <script>
 import * as echarts from "echarts";
 export default {
-  name: "Cybarchart",
+  name: "piechart",
   props: {
     options: {
       type: Object,
@@ -24,7 +24,7 @@ export default {
       chartInstance: null,
     };
   },
-  watch: {
+  watch:{
     options: {
       handler() {
         this.updateChart();
@@ -32,7 +32,7 @@ export default {
       deep: true,
     },
   },
-  mounted() {
+  mounted(){
     this.initChart();
     window.addEventListener("resize", this.handleResize);
   },
@@ -45,8 +45,8 @@ export default {
   },
   methods: {
     initChart() {
-      if (this.$refs.chartRef) {
-        this.chartInstance = echarts.init(this.$refs.chartRef);
+      if (this.$refs.piechart) {
+        this.chartInstance = echarts.init(this.$refs.piechart);
         this.chartInstance.setOption(this.options);
       }
     },

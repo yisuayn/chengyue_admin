@@ -4,7 +4,7 @@
 
 <script>
 import * as echarts from "echarts";
-import { debounce } from 'lodash'; // 推荐使用lodash的防抖函数
+import { debounce } from "lodash"; // 推荐使用lodash的防抖函数
 
 export default {
   name: "DynamicChart",
@@ -27,17 +27,17 @@ export default {
     },
     width: {
       type: String,
-      default: '100%'
+      default: "100%",
     },
     height: {
       type: String,
-      default: '400px'
+      default: "400px",
     },
     // 防抖延迟时间（毫秒）
     debounceDelay: {
       type: Number,
-      default: 200
-    }
+      default: 200,
+    },
   },
   data() {
     return {
@@ -72,12 +72,12 @@ export default {
   },
   methods: {
     // 新增防抖处理的自适应方法
-    handleResize: debounce(function() {
+    handleResize: debounce(function () {
       if (this.myChart && this.$refs.chart) {
         try {
           this.myChart.resize();
         } catch (e) {
-          console.error('图表resize失败:', e);
+          console.error("图表resize失败:", e);
         }
       }
     }, 300),
@@ -85,11 +85,11 @@ export default {
     // 新增监听器绑定方法
     addResizeListener() {
       // 优先使用ResizeObserver
-      if (typeof ResizeObserver === 'function') {
+      if (typeof ResizeObserver === "function") {
         this.resizeObserver = new ResizeObserver(this.handleResize);
         this.resizeObserver.observe(this.$refs.chart);
       } else {
-        window.addEventListener('resize', this.handleResize);
+        window.addEventListener("resize", this.handleResize);
       }
     },
 
@@ -99,7 +99,7 @@ export default {
         this.resizeObserver.disconnect();
         this.resizeObserver = null;
       } else {
-        window.removeEventListener('resize', this.handleResize);
+        window.removeEventListener("resize", this.handleResize);
       }
     },
 
