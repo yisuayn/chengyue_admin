@@ -40,8 +40,8 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage4"
-        :page-sizes="[100, 200, 300, 400]"
+        :current-page="currentPage"
+        :page-sizes="[5, 10, 20, 30]"
         :page-size="100"
         layout="total, sizes, prev, pager, next, jumper"
         :total="400"
@@ -53,8 +53,8 @@
 export default {
   data() {
     return {
-      currentPage4: 4,
-      formdata: [],
+      currentPage: 1, //当前页码
+      formdata: [], //表单提交数据
       wordsteam: [
         {
           Selectwords: '选项1',
@@ -140,6 +140,8 @@ export default {
           address: '上海市普陀区金沙江路 1516 弄',
         },
       ],
+      pageSize:10, //每页数量
+      total:0,  //数据总量
     };
   },
   mounted() {
