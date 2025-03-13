@@ -9,6 +9,9 @@
   padding: 0;
   margin: 0;
 }
+.Cybox{
+  padding: 20px;
+}
 /* 全局滚动条样式 */
 ::-webkit-scrollbar {
   width: 4px; /* 滚动条宽度 */
