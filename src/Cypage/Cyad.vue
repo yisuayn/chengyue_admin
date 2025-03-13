@@ -1,32 +1,37 @@
 <template>
-  <Weight class="Cybox">
-    <el-button type="primary" round>广告添加</el-button>
-    <div>
-      <el-table :data="tableData" style="width: 100%">
-        <el-table-column fixed prop="intotime" label="日期" width="150"></el-table-column>
-        <el-table-column prop="username" label="姓名" width="120"></el-table-column>
-        <el-table-column prop="province" label="省份" width="120"></el-table-column>
-        <el-table-column prop="city" label="市区" width="120"></el-table-column>
-        <el-table-column prop="address" label="地址" width="300"></el-table-column>
-        <el-table-column prop="zip" label="邮编" width></el-table-column>
-        <el-table-column fixed="right" label="操作" width="100">
-          <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-            <el-button @click="editClick(scope.row)" type="text" size="small">编辑</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page.sync="currentPage"
-        :page-sizes="[5,10,15]"
-        :page-size="pageSize"
-        layout="sizes, prev, pager, next,jumper"
-        :total="total"
-      ></el-pagination>
-    </div>
-  </Weight>
+  <el-row>
+    <Weight class="Cybox">
+      <el-button type="primary" round>广告添加</el-button>
+      <div>
+        <el-table :data="tableData" style="width: 100%">
+          <el-table-column fixed prop="intotime" label="日期" width="150"></el-table-column>
+          <el-table-column prop="username" label="姓名" width="120"></el-table-column>
+          <el-table-column prop="province" label="省份" width="120"></el-table-column>
+          <el-table-column prop="city" label="市区" width="120"></el-table-column>
+          <el-table-column prop="address" label="地址" width="300"></el-table-column>
+          <el-table-column prop="zip" label="邮编" width></el-table-column>
+          <el-table-column fixed="right" label="操作" width="100">
+            <template slot-scope="scope">
+              <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+              <el-button @click="editClick(scope.row)" type="text" size="small">编辑</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="currentPage"
+          :page-sizes="[5,10,15]"
+          :page-size="pageSize"
+          layout="sizes, prev, pager, next,jumper"
+          :total="total"
+        ></el-pagination>
+      </div>
+    </Weight>
+    <Weight>
+      <Cybarchart :options="chartOptions"></Cybarchart>
+    </Weight>
+  </el-row>
 </template>
 <script>
 import axios from "axios";
@@ -39,6 +44,7 @@ export default {
       tableData: [],
       pageSize: 10, // 每页显示数量
       currentPage: 1,
+      chartOptions:[]
     };
   },
   created() {
