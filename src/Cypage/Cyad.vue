@@ -44,7 +44,31 @@ export default {
       tableData: [],
       pageSize: 10, // 每页显示数量
       currentPage: 1,
-      chartOptions:[]
+      chartOptions: {
+        tooltip: {
+          trigger: "axis",
+          axisPointer: { type: "shadow" },
+        },
+        grid: {
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
+          containLabel: true,
+        },
+        xAxis: {
+          type: "category",
+          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        },
+        yAxis: {
+          type: "value",
+        },
+        series: [
+          {
+            type: "bar",
+            data: [120, 200, 150, 80, 70, 110, 130],
+          },
+        ],
+      },
     };
   },
   created() {
