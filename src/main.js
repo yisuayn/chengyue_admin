@@ -8,6 +8,7 @@ import Weight from "./components/Weight.vue";
 import Cyecharts from "./components/Cyecharts.vue";
 import Cybarchart from "./components/Cybarchart.vue";
 import Cypiechart from "./components/Cypiechart.vue";
+import Cyscroll from "./components/Cyscroll.vue";
 
 
 // 引入 echarts 核心模块，核心模块提供了 echarts 使用必须要的接口。
@@ -52,6 +53,7 @@ Vue.component('Weight',Weight);
 Vue.component('Cyecharts',Cyecharts);
 Vue.component('Cybarchart',Cybarchart);
 Vue.component('Cypiechart',Cypiechart);
+Vue.component('Cyscroll',Cyscroll);
 
 Vue.config.productionTip = false;
 

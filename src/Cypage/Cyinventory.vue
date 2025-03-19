@@ -10,6 +10,7 @@
           >
             <el-table-column label="Date" prop="date"></el-table-column>
             <el-table-column label="Name" prop="name"></el-table-column>
+            <el-table-column label="address" prop="address"></el-table-column>
             <el-table-column align="right">
               <template slot="header" slot-scope>
                 <el-input v-model="search" size="mini" placeholder="输入关键字搜索" />
@@ -37,12 +38,15 @@
           </el-col>
           <el-col>
             <Weight class="Cybox">
-                
+                <Cyscroll></Cyscroll>
             </Weight>
           </el-col>
         </el-row>
       </el-col>
     </el-row>
+    <Weight>
+        
+    </Weight>
   </div>
 </template>
 <script>

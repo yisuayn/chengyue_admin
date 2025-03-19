@@ -91,7 +91,7 @@ export default {
   },
 
   mounted() {
-    this.initWebSocket();
+    // this.initWebSocket();
     this.containerHeight = this.$refs.container.clientHeight;
     window.addEventListener("resize", this.handleResize);
   },
@@ -104,7 +104,7 @@ export default {
   methods: {
     // 初始化 WebSocket 连接
     initWebSocket() {
-      const wsUrl = "wss://your-websocket-endpoint";
+      const wsUrl = "wss://localhost:3000";
       this.ws = new WebSocket(wsUrl);
 
       this.ws.onmessage = (event) => {
