@@ -30,7 +30,7 @@
           </el-select>
           <el-button>搜索</el-button>
         </el-form>
-        <el-button type="primary" @click="dialogFormVisible  = true">添加</el-button>
+        <el-button type="primary" @click="formcleaning()">添加</el-button>
       </div>
       <el-table :data="currentTableData" style="width: 100%" v-loading="loading">
         <el-table-column prop="username" label="姓名" width="180"></el-table-column>
@@ -50,23 +50,23 @@
       ></el-pagination>
     </Weight>
     <el-dialog title="产品添加" :visible.sync="dialogFormVisible">
-      <el-form :model="form">
-        <el-form-item label="产品名称" :label-width="formLabelWidth">
+      <el-form :model="form" ref="dataref">
+        <el-form-item label="产品名称" :label-width="formLabelWidth" prop="name">
           <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="产品属性" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
+        <el-form-item label="产品属性" :label-width="formLabelWidth" prop="attribute">
+          <el-input v-model="form.attribute" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="产品归属地" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
+        <el-form-item label="产品归属地" :label-width="formLabelWidth" prop="address">
+          <el-input v-model="form.address" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="产品编号" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
+        <el-form-item label="产品编号" :label-width="formLabelWidth" prop="number">
+          <el-input v-model="form.number" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="产品材质" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
+        <el-form-item label="产品材质" :label-width="formLabelWidth" prop="material">
+          <el-input v-model="form.material" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="活动区域" :label-width="formLabelWidth">
+        <el-form-item label="活动区域" :label-width="formLabelWidth" prop="region">
           <el-select v-model="form.region" placeholder="请选择活动区域">
             <el-option label="区域一" value="shanghai"></el-option>
             <el-option label="区域二" value="beijing"></el-option>
@@ -75,7 +75,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button type="primary" @click="submitproduct()">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -158,16 +158,14 @@ export default {
 
       dialogFormVisible: false,
       form: {
-          name: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
-        },
-      formLabelWidth: '120px'
+        name: "",
+        region: "",
+        material: "",
+        attribute: "",
+        address: "",
+        number: "",
+      },
+      formLabelWidth: "120px",
     };
   },
   mounted() {
@@ -177,6 +175,22 @@ export default {
     });
   },
   methods: {
+    formcleaning(){
+      this.dialogFormVisible = true;
+      this.$nextTick(() => {
+        this.$refs.dataref.resetFields();
+      });
+    },
+    submitproduct() {
+      this.dialogFormVisible = false;
+
+      // try{
+
+      // }catch{
+
+      // }
+    },
+    //表格顶部搜索框
     remoteMethod(query) {
       if (query !== "") {
         this.loading = true;
@@ -244,7 +258,7 @@ export default {
 .el-pagination {
   text-align: right;
 }
-.el-dialog{
-  width: 35%;;
+.el-dialog {
+  width: 35%;
 }
 </style>
