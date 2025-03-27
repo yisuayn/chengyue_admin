@@ -33,11 +33,14 @@
         <el-button type="primary" @click="formcleaning()">添加</el-button>
       </div>
       <el-table :data="currentTableData" style="width: 100%" v-loading="loading">
-        <el-table-column prop="username" label="姓名" width="180"></el-table-column>
-        <el-table-column prop="province" label="省份" width="180"></el-table-column>
-        <el-table-column prop="city" label="城市/地区" width="180"></el-table-column>
-        <el-table-column prop="address" label="地址"></el-table-column>
-        <el-table-column prop="zip" label="数字"></el-table-column>
+        <el-table-column prop="sku" label="产品编码" width="180"></el-table-column>
+        <el-table-column prop="spu" label="SPU编码" width="180"></el-table-column>
+        <el-table-column prop="productstatus" label="产品状态" width="180"></el-table-column>
+        <el-table-column prop="createtime" label="创建时间"></el-table-column>
+        <el-table-column prop="updatetime" label="更新时间"></el-table-column>
+        <el-table-column prop="productterritory" label="产品归属地"></el-table-column>
+        <el-table-column prop="adpeople" label="验收者"></el-table-column>
+        <el-table-column prop="producer" label="生产者"></el-table-column>
       </el-table>
       <el-pagination
         @size-change="handleSizeChange"
@@ -75,7 +78,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submitproduct()">确 定</el-button>
+        <el-button type="primary" @click="submitproduct(form)">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -177,18 +180,19 @@ export default {
   methods: {
     formcleaning(){
       this.dialogFormVisible = true;
-      this.$nextTick(() => {
-        this.$refs.dataref.resetFields();
-      });
+      // this.$nextTick(() => {
+      //   this.$refs.dataref.resetFields();
+      // });
     },
-    submitproduct() {
+    async submitproduct(form) {
       this.dialogFormVisible = false;
-
-      // try{
-
-      // }catch{
-
-      // }
+      try{
+        const response = await axios.post('http://localhost:3000/addproduct',form)
+        this.from  = {...response.data}
+        this.fetchData();
+      }catch(error){
+        console.error('添加失败:', error)
+      }
     },
     //表格顶部搜索框
     remoteMethod(query) {
@@ -224,6 +228,7 @@ export default {
           },
         });
         this.tableData = response.data;
+        console.log(response.data);
         this.total = response.data.length;
         this.updateTableData();
       } catch (error) {
