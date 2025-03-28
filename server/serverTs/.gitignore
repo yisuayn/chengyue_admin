@@ -1,0 +1,15 @@
+logger/
+npm-debug.log
+yarn-error.log
+node_modules/
+yarn.lock
+coverage/
+.idea/
+.vscode
+.DS_Store
+*.sw*
+*.un~
+.github/
+build/
+typings/
+run/
