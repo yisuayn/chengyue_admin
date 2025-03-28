@@ -6,8 +6,7 @@
           <el-button type="primary">添加库存</el-button>
           <el-table
             :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
-            style="width: 100%"
-          >
+            style="width: 100%">
             <el-table-column label="Date" prop="date"></el-table-column>
             <el-table-column label="Name" prop="name"></el-table-column>
             <el-table-column label="address" prop="address"></el-table-column>
@@ -38,43 +37,20 @@
           </el-col>
           <el-col>
             <Weight class="Cybox">
-                <Cyscroll></Cyscroll>
+              <Cyscroll></Cyscroll>
             </Weight>
           </el-col>
         </el-row>
       </el-col>
     </el-row>
-    <Weight>
-        
-    </Weight>
+    <Weight></Weight>
   </div>
 </template>
 <script>
 export default {
   data() {
     return {
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄",
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-      ],
+      tableData: [],
       search: "",
     };
   },

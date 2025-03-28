@@ -30,17 +30,23 @@
           </el-select>
           <el-button>搜索</el-button>
         </el-form>
-        <el-button type="primary" @click="formcleaning()">添加</el-button>
+        <el-button type="primary" @click="formcleaning()">新增产品</el-button>
       </div>
       <el-table :data="currentTableData" style="width: 100%" v-loading="loading">
         <el-table-column prop="sku" label="产品编码" width="180"></el-table-column>
         <el-table-column prop="spu" label="SPU编码" width="180"></el-table-column>
         <el-table-column prop="productstatus" label="产品状态" width="180"></el-table-column>
-        <el-table-column prop="createtime" label="创建时间"></el-table-column>
-        <el-table-column prop="updatetime" label="更新时间"></el-table-column>
+        <el-table-column prop="createtime" :formatter="formatTime" label="创建时间"></el-table-column>
+        <el-table-column prop="updatetime" :formatter="formatTime" label="更新时间"></el-table-column>
         <el-table-column prop="productterritory" label="产品归属地"></el-table-column>
         <el-table-column prop="adpeople" label="验收者"></el-table-column>
         <el-table-column prop="producer" label="生产者"></el-table-column>
+        <el-table-column fixed="right" label="操作" width="100">
+          <template slot-scope="scope">
+            <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+            <el-button type="text" @click="handleClick(scope.row)" size="small">编辑</el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <el-pagination
         @size-change="handleSizeChange"
@@ -54,26 +60,29 @@
     </Weight>
     <el-dialog title="产品添加" :visible.sync="dialogFormVisible">
       <el-form :model="form" ref="dataref">
-        <el-form-item label="产品名称" :label-width="formLabelWidth" prop="name">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
+        <el-form-item label="产品编码" :label-width="formLabelWidth" prop="name">
+          <el-input v-model="form.sku" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="产品属性" :label-width="formLabelWidth" prop="attribute">
-          <el-input v-model="form.attribute" autocomplete="off"></el-input>
+        <el-form-item label="SPU编码" :label-width="formLabelWidth" prop="attribute">
+          <el-input v-model="form.spu" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="产品归属地" :label-width="formLabelWidth" prop="address">
-          <el-input v-model="form.address" autocomplete="off"></el-input>
+        <el-form-item label="产品状态" :label-width="formLabelWidth" prop="address">
+          <el-input v-model="form.productstatus" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="产品编号" :label-width="formLabelWidth" prop="number">
-          <el-input v-model="form.number" autocomplete="off"></el-input>
+        <el-form-item label="产品归属地" :label-width="formLabelWidth" prop="material">
+          <el-input v-model="form.productterritory" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="产品材质" :label-width="formLabelWidth" prop="material">
-          <el-input v-model="form.material" autocomplete="off"></el-input>
+        <el-form-item label="验收者" :label-width="formLabelWidth" prop="material">
+          <el-input v-model="form.adpeople" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="活动区域" :label-width="formLabelWidth" prop="region">
-          <el-select v-model="form.region" placeholder="请选择活动区域">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
-          </el-select>
+        <el-form-item label="生产者" :label-width="formLabelWidth" prop="material">
+          <el-input v-model="form.producer" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="创建时间" :label-width="formLabelWidth" prop="number">
+          <el-date-picker v-model="form.createtime" type="datetime" placeholder="选择日期时间"></el-date-picker>
+        </el-form-item>
+        <el-form-item label="更新时间" :label-width="formLabelWidth" prop="material">
+          <el-date-picker v-model="form.updatetime" type="datetime" placeholder="选择日期时间"></el-date-picker>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -85,6 +94,7 @@
 </template>
 <script>
 import axios from "axios";
+import dayjs from "dayjs";
 
 export default {
   data() {
@@ -161,14 +171,16 @@ export default {
 
       dialogFormVisible: false,
       form: {
-        name: "",
-        region: "",
-        material: "",
-        attribute: "",
-        address: "",
-        number: "",
+        sku: "",
+        spu: "",
+        productstatus: "",
+        createtime: "",
+        updatetime: "",
+        productterritory: "",
+        adpeople: "",
+        producer: "",
       },
-      formLabelWidth: "120px",
+      formLabelWidth: "100px",
     };
   },
   mounted() {
@@ -178,20 +190,28 @@ export default {
     });
   },
   methods: {
-    formcleaning(){
+    // 时间格式化
+    formatTime(row, column, cellValue) {
+      return dayjs(cellValue).format("YYYY-MM-DD HH:mm:ss");
+    },
+    //表单清空
+    formcleaning() {
       this.dialogFormVisible = true;
-      // this.$nextTick(() => {
-      //   this.$refs.dataref.resetFields();
-      // });
+      this.$nextTick(() => {
+        this.$refs.dataref.resetFields();
+      });
     },
     async submitproduct(form) {
       this.dialogFormVisible = false;
-      try{
-        const response = await axios.post('http://localhost:3000/addproduct',form)
-        this.from  = {...response.data}
+      try {
+        const response = await axios.post(
+          "http://localhost:3000/addproduct",
+          form
+        );
+        this.from = { ...response.data };
         this.fetchData();
-      }catch(error){
-        console.error('添加失败:', error)
+      } catch (error) {
+        console.error("添加失败:", error);
       }
     },
     //表格顶部搜索框
@@ -221,14 +241,8 @@ export default {
     async fetchData() {
       this.loading = true;
       try {
-        const response = await axios.get("http://localhost:3000/testconnect", {
-          params: {
-            page: this.currentPage,
-            pageSize: this.pageSize,
-          },
-        });
+        const response = await axios.get("http://localhost:3000/testconnect");
         this.tableData = response.data;
-        console.log(response.data);
         this.total = response.data.length;
         this.updateTableData();
       } catch (error) {
@@ -244,6 +258,10 @@ export default {
       let end = start + this.pageSize;
       this.currentTableData = this.tableData.slice(start, end); // 切片获取当前页数据
     },
+    //表格数据操作
+    handleClick(row) {
+        console.log(row);
+      }
   },
 };
 </script>
@@ -264,6 +282,6 @@ export default {
   text-align: right;
 }
 .el-dialog {
-  width: 35%;
+  width: 26%;
 }
 </style>
