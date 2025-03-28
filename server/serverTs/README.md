@@ -24,7 +24,7 @@ export PORT=3000
 export TZ=Asia/Shanghai
 # 运行环境
 export SERVER_ENV=test
-export HOSTNAME=shortUrl-API
+export HOSTNAME=paramecium
 export VERSION=v1.1.0
 export NUM_CPUS=1
 ```
