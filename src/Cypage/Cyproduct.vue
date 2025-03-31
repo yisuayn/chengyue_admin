@@ -57,31 +57,34 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
       ></el-pagination>
+      <el-drawer :title="row.sku" :visible.sync="drawer" :before-close="handleClose">
+        <span>{{ row }}</span>
+      </el-drawer>
     </Weight>
     <el-dialog title="产品添加" :visible.sync="dialogFormVisible">
-      <el-form :model="form" ref="dataref">
-        <el-form-item label="产品编码" :label-width="formLabelWidth" prop="name">
+      <el-form ref="dataref" :model="form">
+        <el-form-item label="产品编码" :label-width="formLabelWidth" prop="sku">
           <el-input v-model="form.sku" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="SPU编码" :label-width="formLabelWidth" prop="attribute">
+        <el-form-item label="SPU编码" :label-width="formLabelWidth" prop="spu">
           <el-input v-model="form.spu" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="产品状态" :label-width="formLabelWidth" prop="address">
+        <el-form-item label="产品状态" :label-width="formLabelWidth" prop="productstatus">
           <el-input v-model="form.productstatus" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="产品归属地" :label-width="formLabelWidth" prop="material">
+        <el-form-item label="产品归属地" :label-width="formLabelWidth" prop="productterritory">
           <el-input v-model="form.productterritory" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="验收者" :label-width="formLabelWidth" prop="material">
+        <el-form-item label="验收者" :label-width="formLabelWidth" prop="adpeople">
           <el-input v-model="form.adpeople" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="生产者" :label-width="formLabelWidth" prop="material">
+        <el-form-item label="生产者" :label-width="formLabelWidth" prop="producer">
           <el-input v-model="form.producer" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="创建时间" :label-width="formLabelWidth" prop="number">
+        <el-form-item label="创建时间" :label-width="formLabelWidth" prop="createtime">
           <el-date-picker v-model="form.createtime" type="datetime" placeholder="选择日期时间"></el-date-picker>
         </el-form-item>
-        <el-form-item label="更新时间" :label-width="formLabelWidth" prop="material">
+        <el-form-item label="更新时间" :label-width="formLabelWidth" prop="updatetime">
           <el-date-picker v-model="form.updatetime" type="datetime" placeholder="选择日期时间"></el-date-picker>
         </el-form-item>
       </el-form>
@@ -99,8 +102,11 @@ import dayjs from "dayjs";
 export default {
   data() {
     return {
+      drawer: false,
+      row: "",
       formdata: [], //表单提交数据
       wordsteam: [
+        //下拉选择框
         {
           Selectwords: "选项1",
           text: "黄金糕",
@@ -208,8 +214,14 @@ export default {
           "http://localhost:3000/addproduct",
           form
         );
-        this.from = { ...response.data };
-        this.fetchData();
+        if (response.status === 200) {
+          this.from = { ...response.data };
+          this.fetchData();
+          this.$message({
+          message: '产品数据添加成功，请查看表格',
+          type: 'success'
+        });
+        }
       } catch (error) {
         console.error("添加失败:", error);
       }
@@ -260,8 +272,17 @@ export default {
     },
     //表格数据操作
     handleClick(row) {
-        console.log(row);
-      }
+      this.drawer = true;
+      this.row = { ...row };
+    },
+    //抽屉关闭按钮
+    handleClose(done) {
+      this.$confirm("确认关闭？")
+        .then(() => {
+          done();
+        })
+        .catch(() => {});
+    },
   },
 };
 </script>

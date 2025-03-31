@@ -45,8 +45,10 @@
     </el-row>
     <Weight></Weight>
   </div>
+
 </template>
 <script>
+
 export default {
   data() {
     return {
@@ -61,6 +63,22 @@ export default {
     handleDelete(index, row) {
       console.log(index, row);
     },
+    async getinventory(){
+      try{
+        const response = await axios.post("http://localhost:3000/addproduct",)
+        if(response.stuets === 200){
+          this.tableData = {...response.data};
+          this.$message({
+          message: '添加成功，库存已更新',
+          type: 'success'
+        });
+        }else{
+          this.$message.error('库存数据更新失败。。。');
+        }
+      }catch(error){
+        console.error("添加失败:", error);
+      }
+    }
   },
 };
 </script>
