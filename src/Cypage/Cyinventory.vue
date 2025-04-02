@@ -48,6 +48,7 @@
 
 </template>
 <script>
+// import axios from "axios";
 
 export default {
   data() {
@@ -65,11 +66,13 @@ export default {
     },
     async getinventory(){
       try{
-        const response = await axios.post("http://localhost:3000/addproduct",)
+        const response = await this.$axios.get("http://localhost:3000/addinventory",)
+        console.log(response.stuets);
+        
         if(response.stuets === 200){
           this.tableData = {...response.data};
           this.$message({
-          message: '添加成功，库存已更新',
+          message: '查询成功，库存列表已更新',
           type: 'success'
         });
         }else{
@@ -80,5 +83,8 @@ export default {
       }
     }
   },
+  mounted(){
+    this.getinventory();
+  }
 };
 </script>
