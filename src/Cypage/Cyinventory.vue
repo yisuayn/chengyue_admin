@@ -4,12 +4,17 @@
       <el-col :span="17">
         <Weight class="Cybox">
           <el-button type="primary">添加库存</el-button>
-          <el-table
-            :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
-            style="width: 100%">
-            <el-table-column label="Date" prop="date"></el-table-column>
-            <el-table-column label="Name" prop="name"></el-table-column>
-            <el-table-column label="address" prop="address"></el-table-column>
+          <el-table :data="tableData" style="width: 100%">
+            <el-table-column label="类别" prop="category"></el-table-column>
+            <el-table-column label="布料" prop="Material"></el-table-column>
+            <el-table-column label="布料工艺" prop="Processcharacteristics"></el-table-column>
+            <el-table-column label="认证等级" prop="SafetyCertification"></el-table-column>
+            <el-table-column label="适用季节" prop="Seasonalproperties"></el-table-column>
+            <el-table-column label="适用场景" prop="scenario"></el-table-column>
+            <el-table-column label="尺寸" prop="Sizematrix"></el-table-column>
+            <el-table-column label="重量参数" prop="Weightparameters"></el-table-column>
+            <el-table-column label="颜色分类 " prop="Colormanagement"></el-table-column>
+            <el-table-column label="包装等级" prop="Packagingconfiguration"></el-table-column>
             <el-table-column align="right">
               <template slot="header" slot-scope>
                 <el-input v-model="search" size="mini" placeholder="输入关键字搜索" />
@@ -67,12 +72,12 @@ export default {
     async getinventory(){
       try{
         const response = await this.$axios.get("http://localhost:3000/addinventory",)
-        console.log(response.stuets);
+        console.log(response);
         
-        if(response.stuets === 200){
-          this.tableData = {...response.data};
+        if(response.status === 200){
+          this.tableData = response.data;
           this.$message({
-          message: '查询成功，库存列表已更新',
+          message: '当前库存列表已更新',
           type: 'success'
         });
         }else{
