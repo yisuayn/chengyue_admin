@@ -254,8 +254,6 @@ export default {
       this.loading = true;
       try {
         const response = await axios.get("http://localhost:3000/testconnect");
-        console.log(response);
-        
         this.tableData = response.data;
         this.total = response.data.length;
         this.updateTableData();
