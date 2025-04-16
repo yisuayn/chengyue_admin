@@ -20,6 +20,7 @@
       title="查看用户"
       :form="form"
       :rules="rules"
+      :formItems="formItems"
       @confirm="handleSubmit"
       @cancel="handleCancel"
     />
@@ -52,15 +53,18 @@ export default {
       },
       rules: {
         name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
-        date: [{ required: true, message: "请输入姓名", trigger: "blur" }],
-        province: [{ required: true, message: "请输入姓名", trigger: "blur" }],
-        city: [{ required: true, message: "请输入姓名", trigger: "blur" }],
-        address: [{ required: true, message: "请输入姓名", trigger: "blur" }],
+        date: [{ required: true, message: "请输入日期", trigger: "blur" }],
+        province: [{ required: true, message: "请输入省份", trigger: "blur" }],
+        city: [{ required: true, message: "城市", trigger: "blur" }],
+        address: [{ required: true, message: "请输入地址", trigger: "blur" }],
         email: [
           { required: true, message: "请输入邮箱", trigger: "blur" },
           { type: "email", message: "邮箱格式不正确", trigger: "blur" },
         ],
       },
+      formItems:[
+        {label:'',prop:'',type:'',placeholder:''}
+      ]
     };
   },
   methods: {
