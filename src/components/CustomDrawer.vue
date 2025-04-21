@@ -8,27 +8,31 @@
     :custom-class="customClass"
     :destroy-on-close="destroyOnClose"
   >
-    <el-form ref="form" :model="formData" :rules="rules" :label-width="labelWidth">
-      <el-form-item label="姓名" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入姓名"></el-input>
-      </el-form-item>
-      <el-form-item label="日期" prop="date">
-        <el-input v-model="formData.date" placeholder="完成日期"></el-input>
-      </el-form-item>
-      <el-form-item label="省份" prop="province">
-        <el-input v-model="formData.province" placeholder="完成日期"></el-input>
-      </el-form-item>
-      <el-form-item label="城市" prop="city">
-        <el-input v-model="formData.city" placeholder="完成日期"></el-input>
-      </el-form-item>
-      <el-form-item label="地址" prop="address">
-        <el-input v-model="formData.address" placeholder="完成日期"></el-input>
-      </el-form-item>
-      <el-form-item label="邮编" prop="zip">
-        <el-input v-model="formData.zip" placeholder="完成日期"></el-input>
-      </el-form-item>
+    <el-form ref="form" :model="formData" :label-width="labelWidth">
+      <template v-for="(item,index) in formConfig">
+        <el-form-item :key="index" :label="item.label" :prop="item.prop">
+          <component
+            :is="getComponentType(item.type)"
+            v-model="formData[item.prop]"
+            v-bind="item.attrs"
+            v-if="!item.options"
+          />
+          <!-- 有 options 时 渲染 select / radio / checkbox -->
+          <el-select
+            v-if="item.type === 'select'"
+            v-model="formData[item.prop]"
+            v-bind="item.attrs"
+          >
+            <el-option
+              v-for="opt in item.options"
+              :key="opt.value"
+              :label="opt.label"
+              :value="opt.value"
+            />
+          </el-select>
+        </el-form-item>
+      </template>
     </el-form>
-
     <div class="drawer-footer">
       <el-button @click="handleCancel">取 消</el-button>
       <el-button type="primary" @click="handleConfirm">确 定</el-button>
@@ -76,6 +80,10 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    formConfig: {
+      type: Array,
+      default: () => [],
+    },
   },
   data() {
     return {
@@ -88,7 +96,10 @@ export default {
       this.visible = val;
       if (val) {
         // 打开时拷贝父组件传来的表单数据
-        this.formData = JSON.parse(JSON.stringify(this.form));
+        this.formData = {
+          ...JSON.parse(JSON.stringify(this.form)),
+
+        };
       }
     },
     visible(val) {
@@ -111,6 +122,16 @@ export default {
           this.visible = false;
         }
       });
+    },
+    getComponentType(type) {
+      const map = {
+        input: "el-input",
+        number: "el-input",
+        textarea: "el-input",
+        "date-picker": "el-date-picker",
+        switch: "el-switch"
+      };
+      return map[type] || "el-input";
     },
   },
 };
