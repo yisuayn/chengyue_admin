@@ -98,7 +98,6 @@ export default {
         // 打开时拷贝父组件传来的表单数据
         this.formData = {
           ...JSON.parse(JSON.stringify(this.form)),
-
         };
       }
     },
@@ -129,7 +128,7 @@ export default {
         number: "el-input",
         textarea: "el-input",
         "date-picker": "el-date-picker",
-        switch: "el-switch"
+        switch: "el-switch",
       };
       return map[type] || "el-input";
     },

@@ -43,6 +43,14 @@
               <i class="el-icon-user-solid"></i>
               <span slot="title">客户管理</span>
             </el-menu-item>
+            <el-menu-item index="Procurement">
+              <i class="el-icon-s-shop"></i>
+              <span slot="title">采购详情</span>
+            </el-menu-item>
+            <el-menu-item index="Warehouse">
+              <i class="el-icon-house"></i>
+              <span slot="title">仓库调拨</span>
+            </el-menu-item>
             <el-menu-item index="consult">
               <i class="el-icon-copy-document"></i>
               <span slot="title">咨询动态</span>

@@ -1,114 +1,46 @@
 <template>
   <div>
-    <!-- 搜索区 -->
     <el-card class="box-card">
-      <el-form :inline="true" :model="searchForm">
-        <el-form-item label="产品名称">
-          <el-input v-model="searchForm.name" placeholder="请输入产品名称" />
-        </el-form-item>
-        <el-form-item label="分类">
-          <el-select v-model="searchForm.category" placeholder="请选择分类">
-            <el-option label="床品" value="床品" />
-            <el-option label="毛巾" value="毛巾" />
-            <el-option label="窗帘" value="窗帘" />
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="fetchData">搜索</el-button>
-          <el-button @click="resetSearch">重置</el-button>
-        </el-form-item>
-      </el-form>
+      <el-tabs v-model="activeTab">
+        <el-tab-pane label="基础设置" name="base">
+          <el-form :model="baseForm" label-width="120px">
+            <el-form-item label="系统名称">
+              <el-input v-model="baseForm.systemName" placeholder="请输入系统名称" />
+            </el-form-item>
+            <el-form-item label="公司名称">
+              <el-input v-model="baseForm.companyName" placeholder="请输入公司名称" />
+            </el-form-item>
+            <el-form-item label="上传LOGO">
+              <el-upload
+                class="avatar-uploader"
+                action="#"
+                :show-file-list="false"
+                :on-success="handleLogoSuccess"
+              >
+                <img v-if="baseForm.logoUrl" :src="baseForm.logoUrl" class="avatar" />
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
+
+        <el-tab-pane label="安全设置" name="security">
+          <el-form :model="securityForm" label-width="150px">
+            <el-form-item label="启用密码复杂度">
+              <el-switch v-model="securityForm.enablePasswordRule" />
+            </el-form-item>
+            <el-form-item label="登录超时时间(分钟)">
+              <el-input-number v-model="securityForm.loginTimeout" :min="1" />
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
+      </el-tabs>
+
+      <div style="text-align: center; margin-top: 20px;">
+        <el-button type="primary" @click="saveSettings">保存设置</el-button>
+        <el-button @click="resetSettings">重置</el-button>
+      </div>
     </el-card>
-
-    <!-- 批量操作 -->
-    <div style="margin: 10px 0">
-      <el-button type="primary" @click="openDialog">新增库存</el-button>
-      <el-button
-        type="danger"
-        :disabled="!multipleSelection.length"
-        @click="batchDelete"
-        >批量删除</el-button
-      >
-    </div>
-
-    <!-- 表格 -->
-    <el-table
-      :data="pagedData"
-      border
-      @selection-change="handleSelectionChange"
-    >
-      <el-table-column type="selection" width="55" />
-      <el-table-column prop="name" label="产品名称" />
-      <el-table-column prop="category" label="分类" />
-      <el-table-column prop="stock" label="库存数量">
-        <template slot-scope="scope">
-          <span
-            :style="{ color: scope.row.stock < scope.row.warning ? 'red' : '' }"
-          >
-            {{ scope.row.stock }}
-          </span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="warning" label="预警值" />
-      <el-table-column prop="status" label="状态">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.stock > 0 ? 'success' : 'info'">
-            {{ scope.row.stock > 0 ? "正常" : "缺货" }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" width="160">
-        <template slot-scope="scope">
-          <el-button type="text" @click="editData(scope.row)">编辑</el-button>
-          <el-button
-            type="text"
-            style="color: red"
-            @click="deleteData(scope.row.id)"
-            >删除</el-button
-          >
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <!-- 分页 -->
-    <el-pagination
-      layout="total, prev, pager, next"
-      :total="stockList.length"
-      :page-size="pageSize"
-      :current-page.sync="currentPage"
-      @current-change="handlePageChange"
-      style="margin-top: 20px; text-align: right"
-    />
-
-    <!-- 弹窗表单 -->
-    <el-dialog
-      title="新增/编辑库存"
-      :visible.sync="dialogVisible"
-      width="500px"
-    >
-      <el-form :model="formData" label-width="100px">
-        <el-form-item label="产品名称">
-          <el-input v-model="formData.name" />
-        </el-form-item>
-        <el-form-item label="分类">
-          <el-select v-model="formData.category">
-            <el-option label="床品" value="床品" />
-            <el-option label="毛巾" value="毛巾" />
-            <el-option label="窗帘" value="窗帘" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="库存数量">
-          <el-input-number v-model="formData.stock" :min="0" />
-        </el-form-item>
-        <el-form-item label="预警值">
-          <el-input-number v-model="formData.warning" :min="0" />
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="saveData">保存</el-button>
-          <el-button @click="dialogVisible = false">取消</el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
   </div>
 </template>
 
@@ -116,71 +48,61 @@
 export default {
   data() {
     return {
-      searchForm: { name: "", category: "" },
-      stockList: [
-        { id: 1, name: "纯棉床单", category: "床品", stock: 300, warning: 50 },
-        { id: 2, name: "吸水毛巾", category: "毛巾", stock: 20, warning: 30 },
-        { id: 3, name: "遮光窗帘", category: "窗帘", stock: 0, warning: 10 },
-      ],
-      multipleSelection: [],
-      dialogVisible: false,
-      formData: { id: null, name: "", category: "", stock: 0, warning: 10 },
-      currentPage: 1,
-      pageSize: 5,
+      activeTab: "base",
+      baseForm: {
+        systemName: "家纺仓储管理系统",
+        companyName: "星河家纺有限公司",
+        logoUrl: "",
+      },
+      securityForm: {
+        enablePasswordRule: true,
+        loginTimeout: 30,
+      },
     };
   },
-  computed: {
-    pagedData() {
-      const start = (this.currentPage - 1) * this.pageSize;
-      return this.stockList.slice(start, start + this.pageSize);
-    },
-  },
   methods: {
-    fetchData() {
-      console.log("搜索条件", this.searchForm);
+    handleLogoSuccess(response, file) {
+      this.baseForm.logoUrl = URL.createObjectURL(file.raw);
     },
-    resetSearch() {
-      this.searchForm = { name: "", category: "" };
+    saveSettings() {
+      console.log("保存设置：", this.baseForm, this.securityForm);
+      this.$message.success("设置已保存！");
     },
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
-    },
-    openDialog() {
-      this.formData = {
-        id: null,
-        name: "",
-        category: "",
-        stock: 0,
-        warning: 10,
+    resetSettings() {
+      this.baseForm = {
+        systemName: "家纺仓储管理系统",
+        companyName: "星河家纺有限公司",
+        logoUrl: "",
       };
-      this.dialogVisible = true;
-    },
-    editData(row) {
-      this.formData = Object.assign({}, row);
-      this.dialogVisible = true;
-    },
-    deleteData(id) {
-      this.stockList = this.stockList.filter((item) => item.id !== id);
-    },
-    batchDelete() {
-      const ids = this.multipleSelection.map((i) => i.id);
-      this.stockList = this.stockList.filter((item) => !ids.includes(item.id));
-    },
-    saveData() {
-      if (this.formData.id) {
-        const index = this.stockList.findIndex(
-          (i) => i.id === this.formData.id
-        );
-        if (index !== -1) this.stockList.splice(index, 1, this.formData);
-      } else {
-        this.formData.id = Date.now();
-        this.stockList.push({ ...this.formData });
-      }
-      this.dialogVisible = false;
-    },
-    handlePageChange(val) {
-      this.currentPage = val;
+      this.securityForm = {
+        enablePasswordRule: true,
+        loginTimeout: 30,
+      };
+      this.$message.info("设置已重置");
     },
   },
 };
 </script>
+
+<style scoped>
+.avatar-uploader {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  overflow: hidden;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  line-height: 100px;
+  text-align: center;
+}
+.avatar {
+  width: 100px;
+  height: 100px;
+  display: block;
+}
+</style>

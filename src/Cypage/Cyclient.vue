@@ -23,68 +23,49 @@
     <!-- 批量操作 -->
     <div style="margin: 10px 0">
       <el-button type="primary" @click="openDialog">新增客户</el-button>
-      <el-button
-        type="danger"
-        :disabled="!multipleSelection.length"
-        @click="batchDelete"
-        >批量删除</el-button
-      >
+      <el-button type="danger" :disabled="!multipleSelection.length" @click="batchDelete">批量删除</el-button>
     </div>
 
-    <!-- 客户信息表格 -->
-    <el-table
-      :data="pagedData"
-      border
-      @selection-change="handleSelectionChange"
-    >
-      <el-table-column type="selection" width="55" />
-      <el-table-column prop="name" label="客户姓名" />
-      <el-table-column prop="phone" label="联系方式" />
-      <el-table-column prop="level" label="等级">
-        <template slot-scope="scope">
-          <el-tag
-            :type="
+    <Weight class="client">
+      <!-- 客户信息表格 -->
+      <el-table :data="pagedData" border @selection-change="handleSelectionChange">
+        <el-table-column type="selection" width="55" />
+        <el-table-column prop="name" label="客户姓名" />
+        <el-table-column prop="phone" label="联系方式" />
+        <el-table-column prop="level" label="等级">
+          <template slot-scope="scope">
+            <el-tag
+              :type="
               scope.row.level === 'VIP'
                 ? 'warning'
                 : scope.row.level === 'VVIP'
                 ? 'danger'
                 : 'info'
             "
-          >
-            {{ scope.row.level }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column prop="remark" label="备注" />
-      <el-table-column label="操作" width="160">
-        <template slot-scope="scope">
-          <el-button type="text" @click="editData(scope.row)">编辑</el-button>
-          <el-button
-            type="text"
-            style="color: red"
-            @click="deleteData(scope.row.id)"
-            >删除</el-button
-          >
-        </template>
-      </el-table-column>
-    </el-table>
+            >{{ scope.row.level }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="remark" label="备注" />
+        <el-table-column label="操作" width="160">
+          <template slot-scope="scope">
+            <el-button type="text" @click="editData(scope.row)">编辑</el-button>
+            <el-button type="text" style="color: red" @click="deleteData(scope.row.id)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
 
-    <!-- 分页 -->
-    <el-pagination
-      layout="total, prev, pager, next"
-      :total="clientList.length"
-      :page-size="pageSize"
-      :current-page.sync="currentPage"
-      @current-change="handlePageChange"
-      style="margin-top: 20px; text-align: right"
-    />
-
+      <!-- 分页 -->
+      <el-pagination
+        layout="total, prev, pager, next"
+        :total="clientList.length"
+        :page-size="pageSize"
+        :current-page.sync="currentPage"
+        @current-change="handlePageChange"
+        style="margin-top: 20px; text-align: right"
+      />
+    </Weight>
     <!-- 弹窗表单 -->
-    <el-dialog
-      title="新增/编辑客户"
-      :visible.sync="dialogVisible"
-      width="500px"
-    >
+    <el-dialog title="新增/编辑客户" :visible.sync="dialogVisible" width="500px">
       <el-form :model="formData" label-width="100px">
         <el-form-item label="客户姓名">
           <el-input v-model="formData.name" />
@@ -197,3 +178,6 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.client{padding: 10px 10px 0 10px;}
+</style>

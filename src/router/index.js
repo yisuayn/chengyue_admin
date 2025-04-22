@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Cylayout from "../views/Cylayout.vue";
+import store from '@/store'
 
 Vue.use(VueRouter);
 
@@ -43,7 +44,25 @@ const routes = [
         component: () => import("../Cypage/Cyconsult.vue"),
         meta:{breadcrumb: [
           { name: '仪表盘', path: '/' },
-          { name: '资讯动态', path: '/product' },
+          { name: '资讯动态', path: '/consult' },
+        ],}
+      },
+      {
+        path: "/Procurement",
+        name: "Procurement",
+        component: () => import("../Cypage/CyProcurement.vue"),
+        meta:{breadcrumb: [
+          { name: '仪表盘', path: '/' },
+          { name: '采购管理', path: '/Procurement' },
+        ],}
+      },
+      {
+        path: "/Warehouse",
+        name: "Warehouse",
+        component: () => import("../Cypage/CyWarehouse.vue"),
+        meta:{breadcrumb: [
+          { name: '仪表盘', path: '/' },
+          { name: '仓库调拨', path: '/Warehouse' },
         ],}
       },
       {
@@ -93,6 +112,15 @@ const routes = [
       },
     ],
   },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/views/CyLogin.vue'),
+  },
+  {
+    path: '*',
+    component: () => import('@/views/Cy404.vue'),
+  }
 ];
 
 const router = new VueRouter({
@@ -101,4 +129,12 @@ const router = new VueRouter({
   routes,
 });
 
+router.beforeEach((to, from, next) => {
+  if (to.path !== '/login' && !store.state.isLogin) {
+    next('/login')
+  } else {
+    next()
+  }
+})
+ 
 export default router;
