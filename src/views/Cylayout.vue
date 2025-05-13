@@ -2,7 +2,7 @@
   <div class="cylayout">
     <el-container>
       <el-header>
-        <Cyheader />
+        <Cyheader v-if="$store.state.isLogin" />
       </el-header>
       <el-container>
         <el-aside width="auto">
@@ -107,6 +107,7 @@ export default {
   created() {
     // 初始化面包屑
     this.updateBreadcrumb();
+    this.startAuthCheck();
   },
   components: { Cyheader },
   methods: {
@@ -128,6 +129,45 @@ export default {
           this.breadcrumbList.length - 1
         ].name = `用户 ${this.$route.params.id}`;
       }
+    },
+    startAuthCheck() {
+      let lastActivity = Date.now();
+
+      const checkInterval = setInterval(() => {
+        const loginTime = this.$store.state.loginTime;
+        const now = Date.now();
+
+        if (!this.$store.state.isLogin) {
+          clearInterval(checkInterval);
+          return;
+        }
+
+        const maxLoginTime = 4 * 60 * 60 * 1000;
+        const idleLimit = 30 * 60 * 1000;
+
+        if (now - loginTime > maxLoginTime) {
+          this.forceLogout("登录超过4小时，已自动退出");
+          clearInterval(checkInterval);
+        }
+
+        if (now - lastActivity > idleLimit) {
+          this.forceLogout("您30分钟无操作，已自动退出");
+          clearInterval(checkInterval);
+        }
+      }, 60000); // 每分钟检查
+
+      const updateActivity = () => {
+        lastActivity = Date.now();
+      };
+
+      window.addEventListener("mousemove", updateActivity);
+      window.addEventListener("keydown", updateActivity);
+    },
+
+    forceLogout(message) {
+      this.$store.commit("logout");
+      this.$router.replace("/login");
+      this.$message.warning(message);
     },
   },
   mounted() {
@@ -153,7 +193,7 @@ export default {
   }
 }
 .el-header {
-  box-shadow:0 0.15rem 0.5rem 0 rgb(113, 113, 113,0.5) ;
+  box-shadow: 0 0.15rem 0.5rem 0 rgb(113, 113, 113, 0.5);
   z-index: 1;
 }
 .el-header,

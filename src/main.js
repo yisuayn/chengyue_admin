@@ -33,7 +33,21 @@ import { CanvasRenderer } from 'echarts/renderers';
 import VueParticles from 'vue-particles'
 Vue.use(VueParticles)
 
-import axios from 'axios'
+import axios from 'axios';
+// 恢复登录状态
+store.commit("restoreLoginState");
+
+// 设置 axios 默认 token
+axios.interceptors.request.use(
+  config => {
+    const token = store.state.token || localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  error => Promise.reject(error)
+);
 Vue.prototype.$axios = axios;
 
 Vue.use(ElementUI);

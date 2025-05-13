@@ -6,11 +6,11 @@
           <p class="workbench">工作台</p>
           <div class="platform">
             <el-avatar
-              src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+              :src="user.imgpath"
               :size="150"
             ></el-avatar>
             <div class="descrition">
-              <p>上午好，田野院子，休息一会儿吧</p>
+              <p>上午好，{{user.username}}，休息一会儿吧</p>
               <p>前端工程师|某某公司-某某部门-vue平台</p>
             </div>
           </div>
@@ -234,6 +234,11 @@ export default {
       this.updataorder();
       this.updataChance();
     }, 5000);
+  },
+  computed: {
+    user() {
+      return this.$store.state.user || {};
+    },
   },
   methods: {
     // 更新当前时间

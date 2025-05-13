@@ -9,19 +9,19 @@
         <span class="el-dropdown-link">
           <el-avatar
             :size="50"
-            src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+            :src="user.imgpath"
           ></el-avatar>
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item @click.native="inforVisible = true">个人信息</el-dropdown-item>
           <el-dropdown-item @click.native="passwordVisible = true">修改密码</el-dropdown-item>
-          <el-dropdown-item divided>退出登录</el-dropdown-item>
+          <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
     <!-- 个人信息修改 -->
     <el-dialog title="提示" :visible.sync="inforVisible" width="30%" :before-close="handleClose" append-to-body>
-      <span>这是一段信息</span>
+      <span>{{ user.username }}</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="inforVisible = false">取 消</el-button>
         <el-button type="primary" @click="inforVisible = false">确 定</el-button>
@@ -49,6 +49,7 @@
 </template>
 
 <script>
+
 export default {
   data() {
     return {
@@ -59,9 +60,13 @@ export default {
         newPassword: "",
         confirmPassword: "",
       },
-      circleUrl:
-        "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
     };
+  },
+  computed: {
+    user() {
+      console.log(this.$store.state.user);
+      return this.$store.state.user || {};      
+    },
   },
   methods: {
     handleClose(done) {
@@ -84,6 +89,10 @@ export default {
       setTimeout(() => {
         this.$message.success("密码修改成功");
       }, 500);
+    },
+     logout() {
+      this.$store.commit("logout");
+      this.$router.replace("/login");
     },
   },
 };
