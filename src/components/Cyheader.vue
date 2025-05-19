@@ -22,6 +22,7 @@
     <!-- 个人信息修改 -->
     <el-dialog title="提示" :visible.sync="inforVisible" width="30%" :before-close="handleClose" append-to-body>
       <span>{{ user.username }}</span>
+      <!-- <span><img :src="user.imgpath" alt=""></span> -->
       <span slot="footer" class="dialog-footer">
         <el-button @click="inforVisible = false">取 消</el-button>
         <el-button type="primary" @click="inforVisible = false">确 定</el-button>
@@ -64,7 +65,6 @@ export default {
   },
   computed: {
     user() {
-      console.log(this.$store.state.user);
       return this.$store.state.user || {};      
     },
   },
