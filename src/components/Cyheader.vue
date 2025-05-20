@@ -7,25 +7,46 @@
     <div class="header-right">
       <el-dropdown trigger="click">
         <span class="el-dropdown-link">
-          <el-avatar
-            :size="50"
-            :src="user.imgpath"
-          ></el-avatar>
+          <el-avatar :size="50" :src="user.imgpath"></el-avatar>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item @click.native="inforVisible = true">个人信息</el-dropdown-item>
+          <el-dropdown-item @click.native="inforVisible = true">信息修改</el-dropdown-item>
           <el-dropdown-item @click.native="passwordVisible = true">修改密码</el-dropdown-item>
           <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
     <!-- 个人信息修改 -->
-    <el-dialog title="提示" :visible.sync="inforVisible" width="30%" :before-close="handleClose" append-to-body>
-      <span>{{ user.username }}</span>
-      <!-- <span><img :src="user.imgpath" alt=""></span> -->
+    <el-dialog
+      title="提示"
+      :visible.sync="inforVisible"
+      width="30%"
+      :before-close="handleClose"
+      append-to-body
+    >
+      <el-form :model="uesrfrom">
+        <el-form-item label="当前用户：" :label-width="formLabelWidth">
+          <el-input v-model="uesrfrom.username" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="用户职位：" :label-width="formLabelWidth">
+          <el-input v-model="uesrfrom.position" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="所在部门：" :label-width="formLabelWidth">
+          <el-input v-model="uesrfrom.department" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="所在平台：" :label-width="formLabelWidth">
+          <el-input v-model="uesrfrom.platform" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="所在公司：" :label-width="formLabelWidth">
+          <el-input v-model="uesrfrom.company" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="头像URL：" :label-width="formLabelWidth">
+          <el-input v-model="uesrfrom.imgpath" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="inforVisible = false">取 消</el-button>
-        <el-button type="primary" @click="inforVisible = false">确 定</el-button>
+        <el-button type="primary" @click="amend">确定修改</el-button>
       </span>
     </el-dialog>
     <!-- 修改密码对话框 -->
@@ -50,22 +71,32 @@
 </template>
 
 <script>
-
 export default {
   data() {
     return {
       inforVisible: false,
       passwordVisible: false,
+      formLabelWidth:'120px',
       passwordForm: {
         oldPassword: "",
         newPassword: "",
         confirmPassword: "",
       },
+      uesrfrom: {},
     };
   },
   computed: {
     user() {
-      return this.$store.state.user || {};      
+      return this.$store.state.user || {};
+    },
+  },
+  watch: {
+    user: {
+      handler(newUser) {
+        this.uesrfrom.username = newUser.username;
+      },
+      deep: true, // 深度监听
+      immediate: true, // 立即触发（替代 created）
     },
   },
   methods: {
@@ -90,10 +121,14 @@ export default {
         this.$message.success("密码修改成功");
       }, 500);
     },
-     logout() {
+    logout() {
       this.$store.commit("logout");
       this.$router.replace("/login");
     },
+    amend(){
+      console.log(this.uesrfrom);
+      this.inforVisible = false;
+    }
   },
 };
 </script>

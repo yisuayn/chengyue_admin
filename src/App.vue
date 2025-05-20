@@ -33,7 +33,7 @@ export default {
         }
 
         const maxLoginTime = 4 * 60 * 60 * 1000;
-        const idleLimit = 3 * 60 * 1000;
+        const idleLimit = 30 * 60 * 1000;
 
         if (now - loginTime > maxLoginTime) {
           this.forceLogout("登录超过4小时，已自动退出");

@@ -34,10 +34,11 @@
   </div>
 </template>
   
-  <script>
+<script>
 export default {
   data() {
     return {
+      fullscreenLoading: false,
       loginForm: {
         username: "",
         password: "",
@@ -46,30 +47,39 @@ export default {
   },
   methods: {
     async handleLogin() {
+      const loading = this.$loading({
+        lock: true,
+        text: "登录中。。。。",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
       try {
         const response = await this.$axios.post("http://localhost:3000/login", {
           username: this.loginForm.username,
           password: this.loginForm.password,
         });
-        console.log(response.data,"数据");
         if (response.data.status === 200 && response.data.data.token) {
           this.$store.commit("loginSuccess", {
             user: {
               username: response.data.data.user.username,
-              imgpath:response.data.data.user.imgpath,
+              imgpath: response.data.data.user.imgpath,
             },
             token: response.data.data.token,
           });
-          this.$router.push("/");
-        } else if (response.data.status === 201 && response.data.data.token) {          
+           setTimeout(() => {
+            this.$router.push("/");
+            loading.close();
+          }, 1500);
+        } else if (response.data.status === 201 && response.data.data.token) {
           this.$store.commit("loginSuccess", {
             user: {
               username: response.data.data.usersinfo.username,
-              imgpath:response.data.data.usersinfo.imgpath,
+              imgpath: response.data.data.usersinfo.imgpath,
             },
             token: response.data.data.token,
           });
           this.$router.push("/");
+          loading.close();
         } else {
           this.$message.error("请输入用户名和密码");
         }
@@ -77,7 +87,8 @@ export default {
         console.error(error);
         this.$message.error("登录失败，请检查网络或服务器");
       } finally {
-        this.loading = false;
+        // this.loading = false;
+        // loading.close();
       }
     },
   },

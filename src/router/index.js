@@ -1,9 +1,17 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Cylayout from "../views/Cylayout.vue";
-import store from '@/store'
+import store from '@/store';
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css';
 
 Vue.use(VueRouter);
+
+// 配置NProgress（可选）
+NProgress.configure({ 
+  showSpinner: false, // 隐藏旋转图标
+  minimum: 0.5,      // 最低进度百分比
+});
 
 const routes = [
   {
@@ -130,11 +138,19 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  NProgress.start();
   if (to.path !== '/login' && !store.state.isLogin) {
     next('/login')
   } else {
     next()
   }
 })
+router.afterEach(() => {
+  NProgress.done();
+});
+
+router.onError(() => {
+  NProgress.done();
+});
  
 export default router;
