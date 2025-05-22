@@ -28,7 +28,8 @@
         <el-form-item>
           <el-input v-model="loginForm.password" type="password" placeholder="密码" />
         </el-form-item>
-        <el-button type="primary" @click="handleLogin" round>登录</el-button>
+         <p>注：新用户直接输入用户名和密码便自动注册</p>
+        <el-button type="primary" @click="handleLogin" round>点击登录</el-button>
       </el-form>
     </div>
   </div>
@@ -58,15 +59,20 @@ export default {
           username: this.loginForm.username,
           password: this.loginForm.password,
         });
+
         if (response.data.status === 200 && response.data.data.token) {
           this.$store.commit("loginSuccess", {
             user: {
-              username: response.data.data.user.username,
-              imgpath: response.data.data.user.imgpath,
+              username: response.data.data.userinfo.username,
+              imgpath: response.data.data.userinfo.imgpath,
+              position: response.data.data.userinfo.position,
+              department: response.data.data.userinfo.department,
+              platform: response.data.data.userinfo.platform,
+              company: response.data.data.userinfo.company,
             },
             token: response.data.data.token,
           });
-           setTimeout(() => {
+          setTimeout(() => {
             this.$router.push("/");
             loading.close();
           }, 1500);
@@ -82,10 +88,12 @@ export default {
           loading.close();
         } else {
           this.$message.error("请输入用户名和密码");
+          loading.close();
         }
       } catch (error) {
         console.error(error);
         this.$message.error("登录失败，请检查网络或服务器");
+        loading.close();
       } finally {
         // this.loading = false;
         // loading.close();
@@ -119,6 +127,9 @@ export default {
   margin-bottom: 20px;
   font-size: 26px;
   color: #333;
+}
+.login-box p{
+  font-size: 13px;
 }
 </style>
   

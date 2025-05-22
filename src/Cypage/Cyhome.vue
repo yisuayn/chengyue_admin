@@ -11,7 +11,7 @@
             ></el-avatar>
             <div class="descrition">
               <p>上午好，{{user.username}}，休息一会儿吧</p>
-              <p>前端工程师|某某公司-某某部门-vue平台</p>
+              <p v-if="user.position">{{user.position}}|{{user.company}}|{{user.department}}|{{user.platform}}</p>
             </div>
           </div>
         </el-col>

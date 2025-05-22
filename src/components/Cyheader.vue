@@ -2,7 +2,7 @@
   <header class="shadow">
     <div class="logo-container">
       <img src="../assets/logo.png" alt="Logo" class="logo-img" />
-      <span class="logo-text">XXX管理系统</span>
+      <span class="logo-text">晟玥科技仓储管理系统</span>
     </div>
     <div class="header-right">
       <el-dropdown trigger="click">
@@ -20,7 +20,7 @@
     <el-dialog
       title="提示"
       :visible.sync="inforVisible"
-      width="30%"
+      width="24%"
       :before-close="handleClose"
       append-to-body
     >
@@ -50,21 +50,21 @@
       </span>
     </el-dialog>
     <!-- 修改密码对话框 -->
-    <el-dialog title="修改密码" :visible.sync="passwordVisible" append-to-body width="30%">
+    <el-dialog title="修改密码" :visible.sync="passwordVisible" append-to-body width="25%">
       <el-form :model="passwordForm" label-width="100px">
-        <el-form-item label="旧密码">
+        <el-form-item label="旧密码" prop="oldPassword">
           <el-input type="password" v-model="passwordForm.oldPassword"></el-input>
         </el-form-item>
-        <el-form-item label="新密码">
+        <el-form-item label="新密码" prop="newPassword">
           <el-input type="password" v-model="passwordForm.newPassword"></el-input>
         </el-form-item>
-        <el-form-item label="确认密码">
+        <el-form-item label="确认密码" prop="confirmPassword">
           <el-input type="password" v-model="passwordForm.confirmPassword"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="passwordVisible = false">取消</el-button>
-        <el-button type="primary" @click="onSubmit">确定</el-button>
+        <el-button type="primary" @click="onSubmit(passwordForm)">确定</el-button>
       </span>
     </el-dialog>
   </header>
@@ -76,7 +76,7 @@ export default {
     return {
       inforVisible: false,
       passwordVisible: false,
-      formLabelWidth:'120px',
+      formLabelWidth: "100px",
       passwordForm: {
         oldPassword: "",
         newPassword: "",
@@ -84,6 +84,7 @@ export default {
       },
       uesrfrom: {},
     };
+
   },
   computed: {
     user() {
@@ -94,6 +95,11 @@ export default {
     user: {
       handler(newUser) {
         this.uesrfrom.username = newUser.username;
+        this.uesrfrom.position = newUser.position;
+        this.uesrfrom.department = newUser.department;
+        this.uesrfrom.platform = newUser.platform;
+        this.uesrfrom.company = newUser.company;
+        this.uesrfrom.imgpath = newUser.imgpath;
       },
       deep: true, // 深度监听
       immediate: true, // 立即触发（替代 created）
@@ -107,15 +113,14 @@ export default {
         })
         .catch(() => {});
     },
-    onSubmit() {
+    onSubmit(value) {
       // 表单验证
-      if (this.passwordForm.newPassword !== this.passwordForm.confirmPassword) {
+      if (value.newPassword !== value.confirmPassword) {
         this.$message.error("两次输入的密码不一致");
         return;
       }
 
-      // 提交逻辑
-      console.log("修改密码表单数据:", this.passwordForm);
+      // 提交逻辑s
       this.passwordVisible = false; // 关闭对话框
       setTimeout(() => {
         this.$message.success("密码修改成功");
@@ -125,10 +130,10 @@ export default {
       this.$store.commit("logout");
       this.$router.replace("/login");
     },
-    amend(){
+    amend() {
       console.log(this.uesrfrom);
       this.inforVisible = false;
-    }
+    },
   },
 };
 </script>
